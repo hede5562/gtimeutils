@@ -8,7 +8,7 @@ GtkWidget *timer_display;
 GtkWidget *window;
 GTimer *timer;
 
-void update_progress_bar () {
+gboolean update_progress_bar () {
   gulong gulong;
   gdouble time_elapsed = g_timer_elapsed (timer, &gulong);
   char *output;
@@ -16,6 +16,7 @@ void update_progress_bar () {
   sprintf(output, "%.2f", time_elapsed);
 
   gtk_label_set_text(GTK_LABEL(timer_display), output);
+  return TRUE;
 }
 
 gboolean keypress (GtkWidget *widget, GdkEventKey *event) {
@@ -46,15 +47,14 @@ int main (int argc, char *argv[]) {
   hbox = gtk_hbox_new(FALSE, 0);
   gtk_box_pack_start(GTK_BOX (hbox), timer_display, FALSE, FALSE, 5);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-
   gtk_container_add (GTK_CONTAINER (window), hbox);
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_widget_show_all (window);
 
   timer = g_timer_new ();
   g_timer_stop(timer);
 
-  gint func_ref = g_timeout_add (50, update_progress_bar, NULL);
+  g_timeout_add_full(G_PRIORITY_HIGH, 50, (GSourceFunc) update_progress_bar, NULL, NULL);
   g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
   g_signal_connect(G_OBJECT(window), "key-press-event", G_CALLBACK(keypress), window);
 
