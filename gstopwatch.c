@@ -47,8 +47,9 @@ int main (int argc, char *argv[]) {
   hbox = gtk_hbox_new(FALSE, 0);
   gtk_box_pack_start(GTK_BOX (hbox), timer_display, FALSE, FALSE, 5);
 
-  gtk_container_add (GTK_CONTAINER (window), hbox);
+
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_container_add (GTK_CONTAINER (window), hbox);
   gtk_widget_show_all (window);
 
   timer = g_timer_new ();
