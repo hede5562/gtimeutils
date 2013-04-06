@@ -2,14 +2,13 @@
 #include <gdk/gdkkeysyms.h>
 #include <glib.h>
 
-gboolean running;
-GtkWidget *window, *box, *timer_display;
 GTimer *timer;
+GtkWidget *timer_display;
 
 gboolean update_progress_bar (void) {
+	char output[100];
 	gulong gulong;
 	gdouble time_elapsed;
-	char *output = NULL;
 
 	time_elapsed = g_timer_elapsed (timer, &gulong);
 	sprintf(output, "%.2f", time_elapsed);
@@ -19,6 +18,7 @@ gboolean update_progress_bar (void) {
 }
 
 gboolean keypress (GdkEventKey *event) {
+	gboolean running = FALSE;
 	guint(g) = event->keyval;
 
 	if((g == GDK_KEY_space)) {
@@ -36,6 +36,8 @@ gboolean keypress (GdkEventKey *event) {
 }
 
 int main (int argc, char *argv[]) {
+	GtkWidget *window, *box;
+
 	gtk_init (&argc, &argv);
 
 	timer_display = gtk_label_new("");
@@ -54,5 +56,6 @@ int main (int argc, char *argv[]) {
 	g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	g_signal_connect(G_OBJECT(window), "key-press-event", G_CALLBACK(keypress), window);
 
-	gtk_main ();
+	gtk_main();
+	g_timer_destroy(timer);
 }
