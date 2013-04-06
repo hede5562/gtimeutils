@@ -9,7 +9,7 @@ GTimer *timer;
 gboolean update_progress_bar (void) {
 	gulong gulong;
 	gdouble time_elapsed;
-	char *output;
+	char *output = NULL;
 
 	time_elapsed = g_timer_elapsed (timer, &gulong);
 	sprintf(output, "%.2f", time_elapsed);
@@ -18,7 +18,7 @@ gboolean update_progress_bar (void) {
 	return TRUE;
 }
 
-gboolean keypress (GtkWidget *widget, GdkEventKey *event) {
+gboolean keypress (GdkEventKey *event) {
 	guint(g) = event->keyval;
 
 	if((g == GDK_KEY_space)) {
