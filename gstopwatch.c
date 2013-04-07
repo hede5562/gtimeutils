@@ -2,6 +2,8 @@
 #include <gdk/gdkkeysyms.h>
 #include <glib.h>
 
+
+gboolean running;
 GTimer *timer;
 GtkWidget *timer_display;
 
@@ -17,8 +19,7 @@ gboolean update_progress_bar (void) {
 	return TRUE;
 }
 
-gboolean keypress (GdkEventKey *event) {
-	gboolean running = FALSE;
+gboolean keypress (GtkWidget *widget, GdkEventKey *event) {
 	guint(g) = event->keyval;
 
 	if((g == GDK_KEY_space)) {
@@ -38,18 +39,18 @@ gboolean keypress (GdkEventKey *event) {
 int main (int argc, char *argv[]) {
 	GtkWidget *window, *box;
 
-	gtk_init (&argc, &argv);
+	gtk_init(&argc, &argv);
 
 	timer_display = gtk_label_new("");
 
 	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
-	gtk_box_pack_start(GTK_BOX (box), timer_display, FALSE, FALSE, 5);
+	gtk_box_pack_start(GTK_BOX (box), timer_display, TRUE, TRUE, 5);
 
-	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_container_add (GTK_CONTAINER (window), box);
-	gtk_widget_show_all (window);
+	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_container_add(GTK_CONTAINER (window), box);
+	gtk_widget_show_all(window);
 
-	timer = g_timer_new ();
+	timer = g_timer_new();
 	g_timer_stop(timer);
 
 	g_timeout_add_full(G_PRIORITY_HIGH, 50, (GSourceFunc) update_progress_bar, NULL, NULL);

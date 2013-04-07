@@ -32,10 +32,10 @@ For any bug or request [fill an issue][bug] on [GitHub][ghp].
 ToDo 
 ----
 
-* Centralize text, display them like gnome-clocks?
+* Display text like gnome-clocks?
 * Laps
 * Hours:Minutes:Seconds display
-* Font size
+* Font size depend on window size
 
 License
 -------
