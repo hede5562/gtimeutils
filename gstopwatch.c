@@ -7,7 +7,7 @@ gchar output[100];
 gint lap = 0;
 GTimer *timer;
 gboolean running;
-GtkWidget *timer_display, *expander, *tree, *button_delete;
+GtkWidget *timer_display, *tree, *button_delete;
 GtkListStore *liststore;
 GtkTreeSelection *selection;
 GtkTreeIter selection_iter, iter;
@@ -54,7 +54,7 @@ gboolean start_timer (GtkWidget *widget, GdkEventKey *event) {
 	return FALSE;
 }
 
-void about_dialog_close (GtkWidget *about_dialog) {
+/*void about_dialog_close (GtkWidget *about_dialog) {
 	gtk_widget_destroy(GTK_WIDGET(about_dialog));
 }
 
@@ -91,7 +91,7 @@ void about_dialog_open (void) {
 	g_signal_connect (GTK_DIALOG(about_dialog), "response", G_CALLBACK(about_dialog_close), NULL);
 
 	gtk_widget_show (about_dialog);
-}
+}*/
 
 void on_list_selection_changed (void) {
 	GtkTreeModel *model;
@@ -115,7 +115,6 @@ void on_lap_button_clicked (void) {
 	gtk_list_store_append(liststore, &iter);
 	gtk_list_store_set(liststore, &iter, N_LAP, lap, TIME, output, -1);
 	gtk_tree_selection_select_iter(gtk_tree_view_get_selection(GTK_TREE_VIEW(tree)), &iter);
-	gtk_expander_set_expanded(GTK_EXPANDER(expander), TRUE);
 	if(selection) {
 		if(gtk_tree_selection_get_selected(selection, NULL, &iter) ) {
 			path = gtk_tree_model_get_path(gtk_tree_view_get_model(GTK_TREE_VIEW(tree)), &iter);
@@ -126,19 +125,16 @@ void on_lap_button_clicked (void) {
 }
 
 int main (int argc, char *argv[]) {
-	GtkWidget *window, *vbox, *hbox, *ebox, *button_about, *button_lap;
+	GtkWidget *window, *vbox, *hbox, *button_about, *button_lap;
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *renderer;
+
 	gtk_init(&argc, &argv);
 
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
-	ebox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 
 	timer_display = gtk_label_new("");
-	expander = gtk_expander_new("Laps");
-	gtk_expander_set_label_fill(GTK_EXPANDER(expander), TRUE);
-	button_about = gtk_button_new_from_stock("gtk-about");
 	button_lap = gtk_button_new_from_stock("gtk-save");
 	button_delete = gtk_button_new_from_stock("gtk-delete");
 	gtk_widget_set_sensitive(button_delete, FALSE);
@@ -165,14 +161,12 @@ int main (int argc, char *argv[]) {
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree));
 	gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
 
-	gtk_box_pack_start(GTK_BOX(vbox), timer_display, TRUE, TRUE, 5);
-	gtk_box_pack_start(GTK_BOX(ebox), tree, TRUE, TRUE, 5);
-	gtk_box_pack_start(GTK_BOX(ebox), button_delete, FALSE, FALSE, 5);
-	gtk_container_add(GTK_CONTAINER(expander), ebox);
-	gtk_box_pack_start(GTK_BOX(vbox), expander, TRUE, TRUE, 5);
-	gtk_container_add(GTK_CONTAINER(vbox), hbox);
-	gtk_box_pack_start(GTK_BOX(hbox), button_about, TRUE, TRUE, 5);
-	gtk_box_pack_end(GTK_BOX(hbox), button_lap, TRUE, TRUE, 5);
+	gtk_box_pack_start(GTK_BOX(vbox), timer_display, FALSE, TRUE, 5);
+	gtk_box_pack_start(GTK_BOX(vbox), tree, TRUE, TRUE, 5);
+	gtk_box_pack_start(GTK_BOX(vbox), button_delete, FALSE, TRUE, 5);
+	gtk_box_pack_start(GTK_BOX(vbox), button_lap, FALSE, TRUE, 5);
+	/*gtk_box_pack_start(GTK_BOX(hbox), button_about, TRUE, TRUE, 5);*/
+	/*gtk_container_add(GTK_CONTAINER(vbox), hbox);*/
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW(window), "Gstopwatch");
@@ -187,7 +181,7 @@ int main (int argc, char *argv[]) {
 	g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	g_signal_connect(G_OBJECT(window), "key-press-event", G_CALLBACK(start_timer), window);
 	g_signal_connect(G_OBJECT(selection), "changed", G_CALLBACK(on_list_selection_changed), NULL);
-	g_signal_connect(button_about, "clicked", G_CALLBACK(about_dialog_open), NULL);
+	/*g_signal_connect(button_about, "clicked", G_CALLBACK(about_dialog_open), NULL);*/
 	g_signal_connect(button_delete, "clicked", G_CALLBACK(on_delete_button_clicked), NULL);
 	g_signal_connect(button_lap, "clicked", G_CALLBACK(on_lap_button_clicked), NULL);
 

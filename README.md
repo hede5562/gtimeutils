@@ -34,8 +34,7 @@ ToDo
 
 * Display text like gnome-clocks?
 * Font size depend on available space?
-* Perhaps move button_lap to ebox?
-* Bug: can't remove last lap from TreeView
+* Add about dialog back in?
 
 License
 -------
