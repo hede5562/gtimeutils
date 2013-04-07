@@ -7,14 +7,14 @@ gchar output[100];
 gint lap = 0;
 GTimer *timer;
 gboolean running;
-GtkWidget *timer_display, *tree, *button_delete;
+GtkWidget *timer_display, *expander, *tree, *button_delete;
 GtkListStore *liststore;
 GtkTreeSelection *selection;
 GtkTreeIter selection_iter, iter;
 
 enum {
     N_LAP,
-	TIME,
+    TIME,
     N_COLUMNS
 };
 
@@ -110,6 +110,7 @@ void on_lap_button_clicked (void) {
 	gtk_list_store_append(liststore, &iter);
 	gtk_list_store_set(liststore, &iter, N_LAP, lap, TIME, output, -1);
 	gtk_tree_selection_select_iter(gtk_tree_view_get_selection(GTK_TREE_VIEW(tree)), &iter);
+	gtk_expander_set_expanded(GTK_EXPANDER(expander), TRUE);
 	if(selection) {
 		if(gtk_tree_selection_get_selected(selection, NULL, &iter) ) {
 			path = gtk_tree_model_get_path(gtk_tree_view_get_model(GTK_TREE_VIEW(tree)), &iter);
@@ -120,11 +121,15 @@ void on_lap_button_clicked (void) {
 }
 
 int main (int argc, char *argv[]) {
-	GtkWidget *window, *vbox, *hbox, *expander, *ebox, *button_about, *button_lap;
+	GtkWidget *window, *vbox, *hbox, *ebox, *button_about, *button_lap;
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *renderer;
 
 	gtk_init(&argc, &argv);
+
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+	ebox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 
 	timer_display = gtk_label_new("");
 	expander = gtk_expander_new("Laps");
@@ -133,7 +138,6 @@ int main (int argc, char *argv[]) {
 	button_delete = gtk_button_new_from_stock("gtk-delete");
 	gtk_widget_set_sensitive(button_delete, FALSE);
 
-	/* setup the tree view widget */
 	tree = gtk_tree_view_new();
 	liststore = gtk_list_store_new(N_COLUMNS, G_TYPE_INT, G_TYPE_STRING);
 	gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(tree), TRUE);
@@ -156,17 +160,14 @@ int main (int argc, char *argv[]) {
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree));
 	gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
 
-	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
-	ebox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_box_pack_start(GTK_BOX(vbox), timer_display, TRUE, TRUE, 5);
 	gtk_box_pack_start(GTK_BOX(ebox), tree, TRUE, TRUE, 5);
 	gtk_box_pack_start(GTK_BOX(ebox), button_delete, FALSE, FALSE, 5);
 	gtk_container_add(GTK_CONTAINER(expander), ebox);
 	gtk_box_pack_start(GTK_BOX(vbox), expander, TRUE, TRUE, 5);
 	gtk_container_add(GTK_CONTAINER(vbox), hbox);
-	gtk_box_pack_start(GTK_BOX(hbox), button_about, FALSE, FALSE, 5);
-	gtk_box_pack_end(GTK_BOX(hbox), button_lap, FALSE, FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(hbox), button_about, TRUE, TRUE, 5);
+	gtk_box_pack_end(GTK_BOX(hbox), button_lap, TRUE, TRUE, 5);
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW(window), "Gstopwatch");
