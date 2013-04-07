@@ -137,6 +137,7 @@ int main (int argc, char *argv[]) {
 
 	timer_display = gtk_label_new("");
 	expander = gtk_expander_new("Laps");
+	gtk_expander_set_label_fill(GTK_EXPANDER(expander), TRUE);
 	button_about = gtk_button_new_from_stock("gtk-about");
 	button_lap = gtk_button_new_from_stock("gtk-save");
 	button_delete = gtk_button_new_from_stock("gtk-delete");
