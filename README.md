@@ -36,6 +36,7 @@ ToDo
 * Font size depend on available space?
 * Centralize expander Laps
 * Perhaps move button_lap to ebox?
+* Bug: can't remove last lap from TreeView
 
 License
 -------

@@ -33,7 +33,7 @@ gboolean update_progress_bar (void) {
 	return TRUE;
 }
 
-gboolean keypress (GtkWidget *widget, GdkEventKey *event) {
+gboolean start_timer (GtkWidget *widget, GdkEventKey *event) {
 	guint(g) = event->keyval;
 
 	if((g == GDK_KEY_space)) {
@@ -99,8 +99,9 @@ void on_list_selection_changed (void) {
 }
 
 void on_delete_button_clicked (void) {
-	gtk_list_store_remove (GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (tree))), &selection_iter);
-	lap--;
+	gtk_list_store_remove(GTK_LIST_STORE(gtk_tree_view_get_model(GTK_TREE_VIEW(tree))), &selection_iter);
+	if(lap != 0)
+		lap--;
 }
 
 void on_lap_button_clicked (void) {
@@ -180,8 +181,8 @@ int main (int argc, char *argv[]) {
 
 	g_timeout_add_full(G_PRIORITY_HIGH, 50, (GSourceFunc) update_progress_bar, NULL, NULL);
 	g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
-	g_signal_connect(G_OBJECT(window), "key-press-event", G_CALLBACK(keypress), window);
-	g_signal_connect (G_OBJECT (selection), "changed", G_CALLBACK (on_list_selection_changed), NULL);
+	g_signal_connect(G_OBJECT(window), "key-press-event", G_CALLBACK(start_timer), window);
+	g_signal_connect(G_OBJECT (selection), "changed", G_CALLBACK (on_list_selection_changed), NULL);
 	g_signal_connect(button_about, "clicked", G_CALLBACK(about_dialog_open), NULL);
 	g_signal_connect(button_delete, "clicked", G_CALLBACK(on_delete_button_clicked), NULL);
 	g_signal_connect(button_lap, "clicked", G_CALLBACK(on_lap_button_clicked), NULL);
