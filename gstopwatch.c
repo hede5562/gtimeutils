@@ -20,6 +20,7 @@ enum {
 
 gboolean update_progress_bar (void) {
 	gint hours, minutes, seconds = -1;
+	gchar *markup;
 	gulong gulong;
 
 	seconds = g_timer_elapsed (timer, &gulong);
@@ -30,6 +31,9 @@ gboolean update_progress_bar (void) {
 	sprintf(output, "%02d:%02d:%02d", hours, minutes, seconds);
 
 	gtk_label_set_text(GTK_LABEL(timer_display), output);
+	markup = g_markup_printf_escaped("<span font=\"48\" weight=\"heavy\"><tt>%s</tt></span>", output);
+	gtk_label_set_markup(GTK_LABEL(timer_display), markup);
+	g_free (markup);
 	return TRUE;
 }
 
@@ -125,7 +129,6 @@ int main (int argc, char *argv[]) {
 	GtkWidget *window, *vbox, *hbox, *ebox, *button_about, *button_lap;
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *renderer;
-
 	gtk_init(&argc, &argv);
 
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
@@ -182,7 +185,7 @@ int main (int argc, char *argv[]) {
 	g_timeout_add_full(G_PRIORITY_HIGH, 50, (GSourceFunc) update_progress_bar, NULL, NULL);
 	g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	g_signal_connect(G_OBJECT(window), "key-press-event", G_CALLBACK(start_timer), window);
-	g_signal_connect(G_OBJECT (selection), "changed", G_CALLBACK (on_list_selection_changed), NULL);
+	g_signal_connect(G_OBJECT(selection), "changed", G_CALLBACK(on_list_selection_changed), NULL);
 	g_signal_connect(button_about, "clicked", G_CALLBACK(about_dialog_open), NULL);
 	g_signal_connect(button_delete, "clicked", G_CALLBACK(on_delete_button_clicked), NULL);
 	g_signal_connect(button_lap, "clicked", G_CALLBACK(on_lap_button_clicked), NULL);
