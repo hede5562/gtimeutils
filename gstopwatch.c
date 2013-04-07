@@ -4,7 +4,7 @@
 #include <glib/gi18n.h>
 
 gchar output[100];
-gint lap = 0;
+gint lap = 0, seconds;
 GTimer *timer;
 gboolean running;
 GtkWidget *timer_display, *tree, *button_delete;
@@ -19,15 +19,19 @@ enum {
 };
 
 gboolean update_progress_bar (void) {
-	gint hours, minutes, seconds = -1;
+	gint hours, minutes;
 	gchar *markup;
 	gulong gulong;
+	gdouble hseconds;
 
+	/*hseconds = g_timer_elapsed (timer, &gulong);
+	hseconds = */
 	seconds = g_timer_elapsed (timer, &gulong);
 	hours = seconds / 3600;
 	seconds -= 3600 * hours;
 	minutes = seconds / 60;
 	seconds -= 60 * minutes;
+	/*sprintf(output, "%02d:%02d:%02d:%.2f", hours, minutes, seconds, hseconds);*/
 	sprintf(output, "%02d:%02d:%02d", hours, minutes, seconds);
 
 	gtk_label_set_text(GTK_LABEL(timer_display), output);
@@ -40,12 +44,19 @@ gboolean update_progress_bar (void) {
 gboolean start_timer (GtkWidget *widget, GdkEventKey *event) {
 	guint(g) = event->keyval;
 
-	if((g == GDK_KEY_space)) {
-		if(running == FALSE) {
-			g_timer_start(timer);
+	if(running == FALSE) {
+		if((g == GDK_KEY_space)) {
+			g_timer_continue(timer);
 			running = TRUE;
 			return TRUE;
-		} else {
+		} else if((g == GDK_KEY_r)) {
+			seconds = 0;
+			g_timer_reset(timer);
+			running = FALSE;
+			return TRUE;
+		}
+	} else if(running == TRUE) {
+		if((g == GDK_KEY_space)) {
 			g_timer_stop(timer);
 			running = FALSE;
 			return TRUE;

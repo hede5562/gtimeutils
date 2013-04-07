@@ -10,7 +10,7 @@ stopwatch will start counting, stop counting and reset.
 Usage 
 -----
 
-The spacebar does it all! Press space to start timing, space to stop, space again to reset and space to start timing again.
+The spacebar does it all! Press space to start timing, space to pause, space again to continue and r to reset the timer when it is paused.
 
 Installation
 ------------
@@ -35,6 +35,9 @@ ToDo
 * Display text like gnome-clocks?
 * Font size depend on available space?
 * Add about dialog back in?
+* Add a timer function too, in GtkNotebook?
+* Keyboard shortcut to add/delete laps?
+* Clever lap deleting
 
 License
 -------
