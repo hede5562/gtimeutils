@@ -34,7 +34,6 @@ ToDo
 
 * Display text like gnome-clocks?
 * Laps
-* Hours:Minutes:Seconds display
 * Font size depend on window size
 
 License

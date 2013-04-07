@@ -8,12 +8,16 @@ GTimer *timer;
 GtkWidget *timer_display;
 
 gboolean update_progress_bar (void) {
-	char output[100];
+	gchar output[100];
+	gint hours, minutes, seconds = -1;
 	gulong gulong;
-	gdouble time_elapsed;
 
-	time_elapsed = g_timer_elapsed (timer, &gulong);
-	sprintf(output, "%.2f", time_elapsed);
+	seconds = g_timer_elapsed (timer, &gulong);
+	hours = seconds / 3600;
+	seconds -= 3600 * hours;
+	minutes = seconds / 60;
+	seconds -= 60 * minutes;
+	sprintf(output, "%02d:%02d:%02d", hours, minutes, seconds);
 
 	gtk_label_set_text(GTK_LABEL(timer_display), output);
 	return TRUE;
