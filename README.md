@@ -33,8 +33,9 @@ ToDo
 ----
 
 * Display text like gnome-clocks?
-* Laps
-* Font size depend on window size
+* Font size depend on available space?
+* Centralize expander Laps
+* Perhaps move button_lap to ebox?
 
 License
 -------
