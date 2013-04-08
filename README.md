@@ -23,7 +23,6 @@ For any bug or request [fill an issue][bug] on [GitHub][ghp].
 ToDo 
 ----
 
-* Add a timer function too, in GtkNotebook?
 * Fix split
 * Button background colors
 	* This doesn't work in some themes, so for now we won't implement this. See:
