@@ -7,11 +7,6 @@ Okay, so apparently there are absolutely zero good stopwatches around for X11!
 I spent my time searching but couldn't find one simple enough for me. This
 stopwatch will start counting, stop counting and reset.
 
-Usage 
------
-
-The spacebar does it all! Press space to start timing, space to pause, space again to continue and r to reset the timer when it is paused.
-
 Installation
 ------------
 
@@ -19,7 +14,7 @@ You'll need the GTK 3.x libraries and headers installed and ready to go. To
 build, simply run these commands:
 
 	$ make
-	$ make clean install
+	# make clean install
 
 Bugs
 ----
@@ -32,12 +27,10 @@ For any bug or request [fill an issue][bug] on [GitHub][ghp].
 ToDo 
 ----
 
-* Display text like gnome-clocks?
-* Font size depend on available space?
+* Add hundreds/tenths of seconds?
 * Add about dialog back in?
 * Add a timer function too, in GtkNotebook?
-* Keyboard shortcut to add/delete laps?
-* Clever lap deleting
+* Add split in laps: difference between lap 1 and lap 2
 
 License
 -------
