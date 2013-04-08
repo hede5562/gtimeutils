@@ -76,9 +76,8 @@ void add_lap (void) {
 }
 
 void on_stopwatch_button_clicked (void) {
-	gdk_color_parse("#C73333", &color);
-
 	if(state == STOPPED) {
+		gdk_color_parse("#C73333", &color);
 		gtk_widget_modify_fg(GTK_WIDGET(button_stopwatch), GTK_STATE_NORMAL, &color);
 		gtk_button_set_label(GTK_BUTTON(button_stopwatch), "Stop");
 		gtk_widget_set_sensitive(GTK_WIDGET(button_funcs), TRUE);
@@ -86,6 +85,7 @@ void on_stopwatch_button_clicked (void) {
 		g_timer_start(stopwatch);
 		state = STARTED;
 	} else if(state == PAUSED) {
+		gdk_color_parse("#C73333", &color);
 		gtk_widget_modify_fg(GTK_WIDGET(button_stopwatch), GTK_STATE_NORMAL, &color);
 		gtk_button_set_label(GTK_BUTTON(button_stopwatch), "Stop");
 		gtk_button_set_label(GTK_BUTTON(button_funcs), "Lap");
