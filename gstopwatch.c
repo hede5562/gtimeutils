@@ -167,7 +167,7 @@ int main (int argc, char *argv[]) {
 	gtk_box_pack_start(GTK_BOX(hbox), button_funcs, TRUE, TRUE, 5);
 	gtk_container_add(GTK_CONTAINER(vbox), hbox);
 	gtk_container_add(GTK_CONTAINER(scroll), tree);
-	gtk_box_pack_start(GTK_BOX(vbox), scroll, TRUE, TRUE, 5);
+	gtk_box_pack_start(GTK_BOX(vbox), scroll, TRUE, TRUE, 0);
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW(window), "Gstopwatch");
