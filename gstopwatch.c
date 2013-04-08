@@ -1,7 +1,4 @@
 #include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
-#include <glib.h>
-#include <glib/gi18n.h>
 
 enum {
     STARTED,
