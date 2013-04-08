@@ -40,6 +40,7 @@ GtkWidget *stopwatch_display, *button_stopwatch, *button_funcs, *tree;
 GtkListStore *liststore;
 GtkTreeSelection *selection;
 GtkTreeIter selection_iter, iter;
+GdkColor color;
 
 gboolean stopwatch_function (void) {
 	gchar *markup;
@@ -75,18 +76,24 @@ void add_lap (void) {
 }
 
 void on_stopwatch_button_clicked (void) {
+	gdk_color_parse("#C73333", &color);
+
 	if(state == STOPPED) {
+		gtk_widget_modify_fg(GTK_WIDGET(button_stopwatch), GTK_STATE_NORMAL, &color);
 		gtk_button_set_label(GTK_BUTTON(button_stopwatch), "Stop");
 		gtk_widget_set_sensitive(GTK_WIDGET(button_funcs), TRUE);
 		gtk_button_set_label(GTK_BUTTON(button_funcs), "Lap");
 		g_timer_start(stopwatch);
 		state = STARTED;
 	} else if(state == PAUSED) {
+		gtk_widget_modify_fg(GTK_WIDGET(button_stopwatch), GTK_STATE_NORMAL, &color);
 		gtk_button_set_label(GTK_BUTTON(button_stopwatch), "Stop");
 		gtk_button_set_label(GTK_BUTTON(button_funcs), "Lap");
 		g_timer_continue(stopwatch);
 		state = STARTED;
 	} else if(state == STARTED) {
+		gdk_color_parse("#67953C", &color);
+		gtk_widget_modify_fg(GTK_WIDGET(button_stopwatch), GTK_STATE_NORMAL, &color);
 		gtk_button_set_label(GTK_BUTTON(button_stopwatch), "Continue");
 		gtk_widget_set_sensitive(GTK_WIDGET(button_funcs), TRUE);
 		gtk_button_set_label(GTK_BUTTON(button_funcs), "Reset");
@@ -120,6 +127,8 @@ int main (int argc, char *argv[]) {
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	stopwatch_display = gtk_label_new("");
 	button_stopwatch = gtk_button_new_with_label("Start");
+	gdk_color_parse("#67953C", &color);
+	gtk_widget_modify_fg(GTK_WIDGET(button_stopwatch), GTK_STATE_NORMAL, &color);
 	button_funcs = gtk_button_new_with_label("Reset");
 	gtk_widget_set_sensitive(button_funcs, FALSE);
 	scroll = gtk_scrolled_window_new (NULL, NULL);
