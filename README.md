@@ -3,10 +3,6 @@ Gstopwatch
 
 **A simple stopwatch, written in GTK3.**
 
-Okay, so apparently there are absolutely zero good stopwatches around for X11!
-I spent my time searching but couldn't find one simple enough for me. This
-stopwatch will start counting, stop counting and reset.
-
 Installation
 ------------
 
@@ -27,10 +23,12 @@ For any bug or request [fill an issue][bug] on [GitHub][ghp].
 ToDo 
 ----
 
-* Add hundreds/tenths of seconds?
-* Add about dialog back in?
 * Add a timer function too, in GtkNotebook?
-* Add split in laps: difference between lap 1 and lap 2
+* Fix split
+* Centralize list stores
+* Button background colors
+	* This doesn't work in some themes, so for now we won't implement this. See:
+https://bugzilla.gnome.org/show_bug.cgi?id=656461
 
 License
 -------
