@@ -31,7 +31,6 @@ ToDo
 * Add about dialog back in?
 * Add a timer function too, in GtkNotebook?
 * Add split in laps: difference between lap 1 and lap 2
-* Bug: lap stays 1
 
 License
 -------

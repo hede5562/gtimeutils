@@ -14,7 +14,7 @@ enum {
 
 gchar output[100];
 GTimer *timer;
-gint state = STOPPED;
+gint state = STOPPED, lap = 0;
 GtkWidget *timer_display, *button_timer, *button_funcs, *tree;
 GtkListStore *liststore;
 GtkTreeSelection *selection;
@@ -44,7 +44,6 @@ gboolean update_progress_bar (void) {
 }
 
 void add_lap (void) {
-	gint lap = 0;
 	GtkTreePath *path;
 
 	lap++;
