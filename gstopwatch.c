@@ -32,29 +32,29 @@ enum {
     N_COLUMNS
 };
 
-GTimer *timer;
+GTimer *stopwatch;
 gchar output[100];
 gint state = STOPPED, lap = 0, hours, minutes; /*split_hours, split_minutes, prev_hours, prev_minutes;*/
 gdouble seconds; /*split_seconds, prev_seconds;*/
-GtkWidget *timer_display, *button_stopwatch, *button_funcs, *tree;
+GtkWidget *stopwatch_display, *button_stopwatch, *button_funcs, *tree;
 GtkListStore *liststore;
 GtkTreeSelection *selection;
 GtkTreeIter selection_iter, iter;
 
-gboolean stopwatch (void) {
+gboolean stopwatch_function (void) {
 	gchar *markup;
 	gulong gulong;
 
-	seconds = g_timer_elapsed (timer, &gulong);
+	seconds = g_timer_elapsed(stopwatch, &gulong);
 	hours = seconds / 3600;
 	seconds -= 3600 * hours;
 	minutes = seconds / 60;
 	seconds -= 60 * minutes;
 	sprintf(output, "%02d:%02d:%.2f", hours, minutes, seconds);
 
-	gtk_label_set_text(GTK_LABEL(timer_display), output);
+	gtk_label_set_text(GTK_LABEL(stopwatch_display), output);
 	markup = g_markup_printf_escaped("<span font=\"48\" weight=\"heavy\"><tt>%s</tt></span>", output);
-	gtk_label_set_markup(GTK_LABEL(timer_display), markup);
+	gtk_label_set_markup(GTK_LABEL(stopwatch_display), markup);
 	g_free (markup);
 	return TRUE;
 }
@@ -74,23 +74,23 @@ void add_lap (void) {
 	gtk_tree_selection_select_iter(gtk_tree_view_get_selection(GTK_TREE_VIEW(tree)), &iter);
 }
 
-void on_timer_button_clicked (void) {
+void on_stopwatch_button_clicked (void) {
 	if(state == STOPPED) {
 		gtk_button_set_label(GTK_BUTTON(button_stopwatch), "Stop");
 		gtk_widget_set_sensitive(GTK_WIDGET(button_funcs), TRUE);
 		gtk_button_set_label(GTK_BUTTON(button_funcs), "Lap");
-		g_timer_start(timer);
+		g_timer_start(stopwatch);
 		state = STARTED;
 	} else if(state == PAUSED) {
 		gtk_button_set_label(GTK_BUTTON(button_stopwatch), "Stop");
 		gtk_button_set_label(GTK_BUTTON(button_funcs), "Lap");
-		g_timer_continue(timer);
+		g_timer_continue(stopwatch);
 		state = STARTED;
 	} else if(state == STARTED) {
 		gtk_button_set_label(GTK_BUTTON(button_stopwatch), "Continue");
 		gtk_widget_set_sensitive(GTK_WIDGET(button_funcs), TRUE);
 		gtk_button_set_label(GTK_BUTTON(button_funcs), "Reset");
-		g_timer_stop(timer);
+		g_timer_stop(stopwatch);
 		state = PAUSED;
 	}
 }
@@ -99,8 +99,8 @@ void on_funcs_button_clicked (void) {
 	if(state == STARTED)
 		add_lap();
 	else if(state == PAUSED) {
-		g_timer_start(timer);
-		g_timer_stop(timer);
+		g_timer_start(stopwatch);
+		g_timer_stop(stopwatch);
 		gtk_widget_set_sensitive(GTK_WIDGET(button_funcs), FALSE);
 		gtk_button_set_label(GTK_BUTTON(button_funcs), "Reset");
 		gtk_button_set_label(GTK_BUTTON(button_stopwatch), "Start");
@@ -110,28 +110,20 @@ void on_funcs_button_clicked (void) {
 }
 
 int main (int argc, char *argv[]) {
-	GtkWidget *window, *notebook, *label_stopwatch, *vbox_stopwatch, *hbox_stopwatch, *scroll, *label_timer, *vbox_timer, *button_timer;
+	GtkWidget *window, *vbox, *hbox, *scroll;
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *renderer;
 
 	gtk_init(&argc, &argv);
 
-	notebook = gtk_notebook_new();
-	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), TRUE);
-	
-	vbox_stopwatch = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-	hbox_stopwatch = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
-	label_stopwatch = gtk_label_new("Stopwatch");
-	timer_display = gtk_label_new("");
+	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+	stopwatch_display = gtk_label_new("");
 	button_stopwatch = gtk_button_new_with_label("Start");
 	button_funcs = gtk_button_new_with_label("Reset");
 	gtk_widget_set_sensitive(button_funcs, FALSE);
 	scroll = gtk_scrolled_window_new (NULL, NULL);
 	g_object_set (scroll, "shadow-type", GTK_SHADOW_IN, NULL);
-
-	vbox_timer = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-	label_timer = gtk_label_new("Timer");
-	button_timer = gtk_button_new_with_label("Start");
 
 	tree = gtk_tree_view_new();
 	liststore = gtk_list_store_new(N_COLUMNS, G_TYPE_INT, /*G_TYPE_STRING, */G_TYPE_STRING);
@@ -161,31 +153,27 @@ int main (int argc, char *argv[]) {
 	gtk_tree_selection_set_mode(selection, GTK_SELECTION_SINGLE);
 	gtk_tree_view_set_enable_search(GTK_TREE_VIEW(tree), FALSE);
 
-	gtk_box_pack_start(GTK_BOX(vbox_stopwatch), timer_display, FALSE, TRUE, 5);
-	gtk_box_pack_start(GTK_BOX(hbox_stopwatch), button_stopwatch, TRUE, TRUE, 5);
-	gtk_box_pack_start(GTK_BOX(hbox_stopwatch), button_funcs, TRUE, TRUE, 5);
-	gtk_container_add(GTK_CONTAINER(vbox_stopwatch), hbox_stopwatch);
+	gtk_box_pack_start(GTK_BOX(vbox), stopwatch_display, FALSE, TRUE, 5);
+	gtk_box_pack_start(GTK_BOX(hbox), button_stopwatch, TRUE, TRUE, 5);
+	gtk_box_pack_start(GTK_BOX(hbox), button_funcs, TRUE, TRUE, 5);
+	gtk_container_add(GTK_CONTAINER(vbox), hbox);
 	gtk_container_add(GTK_CONTAINER(scroll), tree);
-	gtk_box_pack_start(GTK_BOX(vbox_stopwatch), scroll, TRUE, TRUE, 5);
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox_stopwatch, label_stopwatch);
-
-	gtk_box_pack_start(GTK_BOX(vbox_timer), button_timer, TRUE, TRUE, 5);
-	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox_timer, label_timer);
+	gtk_box_pack_start(GTK_BOX(vbox), scroll, TRUE, TRUE, 5);
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW(window), "Gstopwatch");
 	gtk_window_set_default_icon_name("clocks");
-	gtk_container_add(GTK_CONTAINER(window), notebook);
+	gtk_container_add(GTK_CONTAINER(window), vbox);
 	gtk_widget_show_all(window);
 
-	timer = g_timer_new();
-	g_timer_stop(timer);
+	stopwatch = g_timer_new();
+	g_timer_stop(stopwatch);
 
-	g_timeout_add_full(G_PRIORITY_HIGH, 50, (GSourceFunc) stopwatch, NULL, NULL);
+	g_timeout_add_full(G_PRIORITY_HIGH, 50, (GSourceFunc) stopwatch_function, NULL, NULL);
 	g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
-	g_signal_connect(button_stopwatch, "clicked", G_CALLBACK(on_timer_button_clicked), NULL);
+	g_signal_connect(button_stopwatch, "clicked", G_CALLBACK(on_stopwatch_button_clicked), NULL);
 	g_signal_connect(button_funcs, "clicked", G_CALLBACK(on_funcs_button_clicked), NULL);
 
 	gtk_main();
-	g_timer_destroy(timer);
+	g_timer_destroy(stopwatch);
 }
