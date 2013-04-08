@@ -1,3 +1,22 @@
+/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*-  */
+/*
+ * gstopwatch
+ * Copyright (C) 2013 Jente (jthidskes at outlook dot com)
+ *
+ * gstopwatch is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * gstopwatch is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <gtk/gtk.h>
 
 enum {
@@ -8,15 +27,15 @@ enum {
 
 enum {
     N_LAP,
-	SPLIT,
+    /*SPLIT,*/
     TIME,
     N_COLUMNS
 };
 
 GTimer *timer;
 gchar output[100];
-gint state = STOPPED, lap = 0, hours, minutes, split_hours, split_minutes, prev_hours, prev_minutes;
-gdouble seconds, split_seconds, prev_seconds;
+gint state = STOPPED, lap = 0, hours, minutes; /*split_hours, split_minutes, prev_hours, prev_minutes;*/
+gdouble seconds; /*split_seconds, prev_seconds;*/
 GtkWidget *timer_display, *button_timer, *button_funcs, *tree;
 GtkListStore *liststore;
 GtkTreeSelection *selection;
