@@ -25,7 +25,6 @@ ToDo
 
 * Add a timer function too, in GtkNotebook?
 * Fix split
-* Centralize list stores
 * Button background colors
 	* This doesn't work in some themes, so for now we won't implement this. See:
 https://bugzilla.gnome.org/show_bug.cgi?id=656461
