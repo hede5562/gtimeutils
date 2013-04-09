@@ -1,6 +1,6 @@
 pkgname=gstopwatch-git
 pkgbase=gstopwatch
-pkgver=20130331
+pkgver=2013.03.28
 pkgrel=1
 pkgdesc="A simple stopwatch, written in GTK3."
 arch=(any)
@@ -10,6 +10,11 @@ depends=('gtk3')
 
 _gitroot="https://github.com/Unia/$pkgbase"
 _gitname="$pkgbase"
+
+pkgver() {
+    cd "$srcdir/$_gitname"
+    git log -1 --format="%cd" --date=short | sed 's|-|.|g'
+}
 
 build() {
 	cd "$srcdir"
