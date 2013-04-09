@@ -11,11 +11,6 @@ depends=('gtk3')
 _gitroot="https://github.com/Unia/$pkgbase"
 _gitname="$pkgbase"
 
-pkgver() {
-    cd "$srcdir/$_gitname"
-    git log -1 --format="%cd" --date=short | sed 's|-|.|g'
-}
-
 build() {
 	cd "$srcdir"
 	msg "Connecting to GIT server..."
@@ -31,6 +26,11 @@ build() {
 	msg "GIT checkout done or server timeout"
 
 	make
+}
+
+pkgver() {
+    cd "$srcdir/$_gitname"
+    git log -1 --format="%cd" --date=short | sed 's|-|.|g'
 }
 
 package() {
