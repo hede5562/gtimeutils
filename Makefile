@@ -2,20 +2,19 @@ PROG = gstopwatch
 
 CC      = gcc
 LIBS    = `pkg-config --cflags --libs gtk+-3.0`
-CFLAGS  = -std=c99 -Wall -Wextra -Wno-deprecated-declarations
+CFLAGS  = -std=c99 -Wall -Wextra
 
 PREFIX   ?= /usr/local
 BINPREFIX = $(PREFIX)/bin
 
 all: CFLAGS += -Os
-all: LDFLAGS += -s
 all: $(PROG)
 
 debug: CFLAGS += -O0 -g -pedantic
 debug: all
 
 $(PROG): $(PROG).c
-	gcc $(PROG).c -o $(PROG) $(CFLAGS) $(LIBS)
+	$(CC) $(PROG).c -o $(PROG) $(CFLAGS) $(LIBS)
 
 install:
 	mkdir -p $(DESTDIR)/$(BINPREFIX)
