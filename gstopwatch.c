@@ -27,15 +27,14 @@ enum {
 
 enum {
     N_LAP,
-    /*SPLIT,*/
     TIME,
     N_COLUMNS
 };
 
 GTimer *stopwatch;
 gchar output[100];
-gint state = STOPPED, lap = 0, hours, minutes; /*split_hours, split_minutes, prev_hours, prev_minutes;*/
-gdouble seconds; /*split_seconds, prev_seconds;*/
+gint state = STOPPED, laps = 0, hours, minutes;
+gdouble seconds;
 GtkWidget *stopwatch_display, *button_stopwatch, *button_funcs, *tree;
 GtkListStore *liststore;
 GtkTreeSelection *selection;
@@ -61,17 +60,10 @@ gboolean stopwatch_function (void) {
 }
 
 void add_lap (void) {
-	/*gchar split[100];*/
-	lap++;
-	/*split_seconds = seconds - prev_seconds;
-	prev_seconds = seconds;
-	if(split_seconds > 60) {
-		split_minutes = split_seconds / 60;
-		prev_minutes = minutes;
-	}
-	sprintf(split, "%02d:%.2f", split_minutes, split_seconds);*/
+	laps++;
+
 	gtk_list_store_append(GTK_LIST_STORE(liststore), &iter);
-	gtk_list_store_set(GTK_LIST_STORE(liststore), &iter, N_LAP, lap, /*SPLIT, split, */TIME, output, -1);
+	gtk_list_store_set(GTK_LIST_STORE(liststore), &iter, N_LAP, laps, TIME, output, -1);
 	gtk_tree_selection_select_iter(gtk_tree_view_get_selection(GTK_TREE_VIEW(tree)), &iter);
 }
 
@@ -108,11 +100,12 @@ void on_funcs_button_clicked (void) {
 	else if(state == PAUSED) {
 		g_timer_start(stopwatch);
 		g_timer_stop(stopwatch);
+		laps = 0;
+		state = STOPPED;
 		gtk_widget_set_sensitive(GTK_WIDGET(button_funcs), FALSE);
 		gtk_button_set_label(GTK_BUTTON(button_funcs), "Reset");
 		gtk_button_set_label(GTK_BUTTON(button_stopwatch), "Start");
 		gtk_list_store_clear(GTK_LIST_STORE(liststore));
-		state = STOPPED;
 	}
 }
 
@@ -135,7 +128,7 @@ int main (int argc, char *argv[]) {
 	g_object_set (scroll, "shadow-type", GTK_SHADOW_IN, NULL);
 
 	tree = gtk_tree_view_new();
-	liststore = gtk_list_store_new(N_COLUMNS, G_TYPE_INT, /*G_TYPE_STRING, */G_TYPE_STRING);
+	liststore = gtk_list_store_new(N_COLUMNS, G_TYPE_INT, G_TYPE_STRING);
 	gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(tree), TRUE);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(tree), GTK_TREE_MODEL(liststore));
 
@@ -147,11 +140,6 @@ int main (int argc, char *argv[]) {
 	gtk_tree_view_column_set_attributes(column, renderer, "text", N_LAP, NULL);
 	gtk_tree_view_column_set_expand(column, TRUE);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(tree), column);
-
-	/*renderer = gtk_cell_renderer_text_new();
-	column = gtk_tree_view_column_new_with_attributes("Split", renderer, "text", SPLIT, NULL);
-	gtk_tree_view_column_set_expand(column, TRUE);
-	gtk_tree_view_append_column(GTK_TREE_VIEW(tree), column);*/
 
 	renderer = gtk_cell_renderer_text_new();
 	column = gtk_tree_view_column_new_with_attributes("Time", renderer, "text", TIME, NULL);

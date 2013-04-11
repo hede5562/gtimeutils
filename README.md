@@ -20,11 +20,6 @@ For any bug or request [fill an issue][bug] on [GitHub][ghp].
   [bug]: https://github.com/Unia/gstopwatch/issues
   [ghp]: https://github.com/Unia/gstopwatch
 
-ToDo 
-----
-
-* Fix split
-
 License
 -------
 
