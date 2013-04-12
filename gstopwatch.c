@@ -109,12 +109,12 @@ void on_funcs_button_clicked (void) {
 	}
 }
 
-int main (int argc, char *argv[]) {
+int main (void) {
 	GtkWidget *window, *vbox, *hbox, *scroll;
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *renderer;
 
-	gtk_init(&argc, &argv);
+	gtk_init(NULL, NULL);
 
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);

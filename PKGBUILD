@@ -2,7 +2,7 @@
 
 pkgname=gstopwatch-git
 _gitname=gstopwatch
-pkgver=2013.04.10
+pkgver=2013.04.11
 pkgrel=1
 pkgdesc="A simple stopwatch, written in GTK3"
 arch=('i686' 'x86_64')
