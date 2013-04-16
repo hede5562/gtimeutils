@@ -14,7 +14,7 @@ build, simply run these commands:
 
 ToDo
 ----
-* Gtimer: dialog/sound/notification when timer is done;
+* Gtimer: sound when timer is done;
 
 Bugs
 ----

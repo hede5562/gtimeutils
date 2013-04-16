@@ -18,9 +18,8 @@
  */
 
 #include <gtk/gtk.h>
-#ifdef DEBUG
+#include <libnotify/notify.h>
 #include <glib/gprintf.h>
-#endif
 
 enum {
     STARTED,
@@ -49,6 +48,18 @@ void button_timer_start (gboolean start) {
 		gtk_button_set_label(GTK_BUTTON(button_timer), "Continue");
 }
 
+void notify (void) {
+	GError *error_notify = NULL;
+	NotifyNotification *gtimer_notify;
+
+	gtimer_notify = notify_notification_new("Time is up!", NULL, "clocks");
+	notify_notification_set_category(gtimer_notify, "GTimeUtils");
+	notify_notification_set_urgency(gtimer_notify, NOTIFY_URGENCY_NORMAL);
+	notify_notification_show(gtimer_notify, &error_notify);
+	if(error_notify)
+		g_fprintf(stderr, "Can not initialize notification: %s\n", error_notify->message);
+}
+
 void counter (void) {
 	seconds = gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin_seconds));
 	minutes = gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin_minutes));
@@ -57,12 +68,13 @@ void counter (void) {
 	seconds += 3600 * hours;
 
 	if(seconds == 0) {
-#ifdef DEBUG
-		g_fprintf(stdout, "Timer completed!\n");
-#endif
+		notify();
 		button_timer_start(TRUE);
 		gtk_widget_set_sensitive(GTK_WIDGET(button_reset), FALSE);
 		state = STOPPED;
+#ifdef DEBUG
+		g_fprintf(stdout, "Timer completed!\n");
+#endif
 	} else {
 		seconds -= 1;
 		hours = seconds / 3600;
@@ -110,6 +122,7 @@ int main (void) {
 	GtkWidget *window, *vbox, *hbox1, *hbox2;
 
 	gtk_init(NULL, NULL);
+	notify_init("Gtimer");
 
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	hbox1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
@@ -150,4 +163,5 @@ int main (void) {
 	g_signal_connect(button_reset, "clicked", G_CALLBACK(on_reset_button_clicked), NULL);
 
 	gtk_main();
+	notify_uninit();
 }
