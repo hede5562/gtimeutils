@@ -18,7 +18,6 @@
  */
 
 #include <gtk/gtk.h>
-#include <glib/gprintf.h>
 
 enum {
     STARTED,
@@ -51,7 +50,6 @@ void counter (gboolean counting) {
 		minutes = seconds / 60;
 		seconds -= 60 * minutes;
 		sprintf(output, "%02d:%02d:%.2f", hours, minutes, seconds);
-		g_fprintf(stdout, "%.2f\n", seconds);
 	} else
 		sprintf(output, "00:00:0,00");
 
