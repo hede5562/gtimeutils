@@ -18,6 +18,7 @@
  */
 
 #include <gtk/gtk.h>
+#include <glib/gprintf.h>
 
 enum {
     STARTED,
@@ -33,29 +34,41 @@ enum {
 
 GTimer *stopwatch;
 gchar output[100];
-gint state = STOPPED, laps = 0, hours, minutes;
-gdouble seconds;
+gint state = STOPPED, laps = 0, hours = 0, minutes = 0;
+gdouble seconds = 0;
 GtkWidget *stopwatch_display, *button_stopwatch, *button_funcs, *tree;
 GtkListStore *liststore;
 GtkTreeSelection *selection;
 GtkTreeIter selection_iter, iter;
 GdkColor color;
 
-gboolean stopwatch_function (void) {
+void counter (gboolean counting) {
 	gchar *markup;
-	gulong gulong;
 
-	seconds = g_timer_elapsed(stopwatch, &gulong);
-	hours = seconds / 3600;
-	seconds -= 3600 * hours;
-	minutes = seconds / 60;
-	seconds -= 60 * minutes;
-	sprintf(output, "%02d:%02d:%.2f", hours, minutes, seconds);
+	if(counting) {
+		hours = seconds / 3600;
+		seconds -= 3600 * hours;
+		minutes = seconds / 60;
+		seconds -= 60 * minutes;
+		sprintf(output, "%02d:%02d:%.2f", hours, minutes, seconds);
+		g_fprintf(stdout, "%.2f\n", seconds);
+	} else
+		sprintf(output, "00:00:0,00");
 
 	gtk_label_set_text(GTK_LABEL(stopwatch_display), output);
 	markup = g_markup_printf_escaped("<span font=\"48\" weight=\"heavy\"><tt>%s</tt></span>", output);
 	gtk_label_set_markup(GTK_LABEL(stopwatch_display), markup);
 	g_free (markup);
+}
+
+gboolean stopwatch_function (void) {
+	gulong gulong;
+
+	if(state == STARTED) {
+		seconds = g_timer_elapsed(stopwatch, &gulong);
+		counter(TRUE);
+	} else if(state == STOPPED)
+		counter(FALSE);
 	return TRUE;
 }
 
