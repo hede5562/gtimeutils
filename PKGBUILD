@@ -1,16 +1,16 @@
 # Maintainer: Unia <jthidskes@outlook.com> 
 
-pkgname=gstopwatch-git
-_gitname=gstopwatch
-pkgver=2013.04.11
+pkgname=gtimeutils-git
+_gitname=gtimeutils
+pkgver=2013.04.12
 pkgrel=1
-pkgdesc="A simple stopwatch, written in GTK3"
+pkgdesc="A simple stopwatch and timer, written in GTK3"
 arch=('i686' 'x86_64')
-url="https://github.com/Unia/gstopwatch"
+url="https://github.com/Unia/gtimeutils"
 license=('GPL2')
 depends=('gtk3')
 makedepends=('git')
-source=('git://github.com/Unia/gstopwatch.git')
+source=('git://github.com/Unia/gtimeutils.git')
 md5sums=('SKIP')
 
 pkgver() {
@@ -20,7 +20,7 @@ pkgver() {
 
 build() {
   cd $_gitname
-  make
+  make all
 }
 
 package() {

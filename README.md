@@ -1,7 +1,7 @@
-Gstopwatch 
+GTimeUtils
 =========
 
-**A simple stopwatch, written in GTK3.**
+**A simple stopwatch and timer, written in GTK3.**
 
 Installation
 ------------
@@ -12,20 +12,26 @@ build, simply run these commands:
 	$ make
 	# make clean install
 
+ToDo
+----
+* Gtimer: dialog/sound/notification when timer is done;
+* Colored buttons;
+* Sensitive buttons;
+
 Bugs
 ----
 
 For any bug or request [fill an issue][bug] on [GitHub][ghp].
 
-  [bug]: https://github.com/Unia/gstopwatch/issues
-  [ghp]: https://github.com/Unia/gstopwatch
+  [bug]: https://github.com/Unia/gtimeutils/issues
+  [ghp]: https://github.com/Unia/gtimeutils
 
 License
 -------
 
-**Gstopwatch** is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+**GTimeUtils** is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-**Gstopwatch** is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+**GTimeUtils** is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
