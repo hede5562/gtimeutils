@@ -15,8 +15,6 @@ build, simply run these commands:
 ToDo
 ----
 * Gtimer: dialog/sound/notification when timer is done;
-* Colored buttons;
-* Sensitive buttons;
 
 Bugs
 ----

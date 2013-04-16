@@ -34,6 +34,21 @@ GtkAdjustment *sadj, *madj, *hadj;
 gint elapsed, seconds, minutes, hours, state = STOPPED;
 GtkWidget *button_timer, *button_reset, *spin_seconds, *spin_minutes, *spin_hours;
 
+void button_timer_stop (void) {
+	gdk_color_parse("#C73333", &color);
+	gtk_widget_modify_fg(GTK_WIDGET(button_timer), GTK_STATE_NORMAL, &color);
+	gtk_button_set_label(GTK_BUTTON(button_timer), "Stop");
+}
+
+void button_timer_start (gboolean start) {
+	gdk_color_parse("#67953C", &color);
+	gtk_widget_modify_fg(GTK_WIDGET(button_timer), GTK_STATE_NORMAL, &color);
+	if(start)
+		gtk_button_set_label(GTK_BUTTON(button_timer), "Start");
+	else
+		gtk_button_set_label(GTK_BUTTON(button_timer), "Continue");
+}
+
 void counter (void) {
 	seconds = gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin_seconds));
 	minutes = gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin_minutes));
@@ -45,6 +60,8 @@ void counter (void) {
 #ifdef DEBUG
 		g_fprintf(stdout, "Timer completed!\n");
 #endif
+		button_timer_start(TRUE);
+		gtk_widget_set_sensitive(GTK_WIDGET(button_reset), FALSE);
 		state = STOPPED;
 	} else {
 		seconds -= 1;
@@ -69,13 +86,14 @@ gboolean timer_function (void) {
 
 void on_timer_button_clicked (void) {
 	if(state == STOPPED) {
-		gtk_button_set_label(GTK_BUTTON(button_timer), "Stop");
+		button_timer_stop();
+		gtk_widget_set_sensitive(GTK_WIDGET(button_reset), TRUE);
 		state = STARTED;
 	} else if(state == PAUSED) {
-		gtk_button_set_label(GTK_BUTTON(button_timer), "Stop");
+		button_timer_stop();
 		state = STARTED;
 	} else if(state == STARTED) {
-		gtk_button_set_label(GTK_BUTTON(button_timer), "Continue");
+		button_timer_start(FALSE);
 		state = PAUSED;
 	}
 }
@@ -83,7 +101,7 @@ void on_timer_button_clicked (void) {
 void on_reset_button_clicked (void) {
 	if(state == PAUSED || state == STARTED) {
 		state = STOPPED;
-		gtk_button_set_label(GTK_BUTTON(button_timer), "Start");
+		button_timer_start(TRUE);
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_seconds), 0);
 	}
 }
@@ -107,8 +125,10 @@ int main (void) {
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(spin_minutes), TRUE);
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(spin_hours), TRUE);
 
-	button_timer = gtk_button_new_with_label("Start");
+	button_timer = gtk_button_new();
+	button_timer_start(TRUE);
 	button_reset = gtk_button_new_with_label("Reset");
+	gtk_widget_set_sensitive(GTK_WIDGET(button_reset), FALSE);
 
 	gtk_box_pack_start(GTK_BOX(hbox1), spin_hours, TRUE, TRUE, 5);
 	gtk_box_pack_start(GTK_BOX(hbox1), spin_minutes, TRUE, TRUE, 5);
