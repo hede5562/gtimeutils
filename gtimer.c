@@ -29,11 +29,12 @@ enum {
 };
 
 GTimer *timer;
-ca_context *c;
 GdkColor color;
+ca_context *sound;
+gchar output[100];
 GtkAdjustment *sadj, *madj, *hadj;
 gint elapsed, seconds, minutes, hours, state = STOPPED;
-GtkWidget *button_timer, *button_reset, *spin_seconds, *spin_minutes, *spin_hours;
+GtkWidget *box_timer, *timer_display, *hbox1, *button_timer, *button_reset, *spin_seconds, *spin_minutes, *spin_hours;
 
 void button_timer_stop (void) {
 	gdk_color_parse("#C73333", &color);
@@ -51,20 +52,22 @@ void button_timer_start (gboolean start) {
 }
 
 void notify (void) {
+	NotifyNotification *notify;
 	GError *error_notify = NULL;
-	NotifyNotification *gtimer_notify;
 
-	gtimer_notify = notify_notification_new("Time is up!", NULL, "clocks");
-	notify_notification_set_category(gtimer_notify, "GTimeUtils");
-	notify_notification_set_urgency(gtimer_notify, NOTIFY_URGENCY_NORMAL);
-	notify_notification_show(gtimer_notify, &error_notify);
+	notify = notify_notification_new("Time is up!", NULL, "clocks");
+	notify_notification_set_category(notify, "GTimeUtils");
+	notify_notification_set_urgency(notify, NOTIFY_URGENCY_NORMAL);
+	notify_notification_show(notify, &error_notify);
 	if(error_notify)
 		g_fprintf(stderr, "Can not initialize notification: %s\n", error_notify->message);
 
-	ca_context_play(c, 0, CA_PROP_APPLICATION_NAME, "Gtimer", CA_PROP_EVENT_ID, "complete-copy", CA_PROP_MEDIA_ROLE, "notification",  CA_PROP_APPLICATION_ICON_NAME, "clocks", CA_PROP_CANBERRA_CACHE_CONTROL, "never", NULL);
+	ca_context_play(sound, 0, CA_PROP_APPLICATION_NAME, "Gtimer", CA_PROP_EVENT_ID, "complete-copy", CA_PROP_MEDIA_ROLE, "notification",  CA_PROP_APPLICATION_ICON_NAME, "clocks", CA_PROP_CANBERRA_CACHE_CONTROL, "never", NULL);
 }
 
 void counter (void) {
+	gchar *markup;
+
 	seconds = gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin_seconds));
 	minutes = gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin_minutes));
 	hours = gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin_hours));
@@ -75,6 +78,8 @@ void counter (void) {
 		notify();
 		button_timer_start(TRUE);
 		gtk_widget_set_sensitive(GTK_WIDGET(button_reset), FALSE);
+		gtk_widget_hide(box_timer);
+		gtk_widget_show(hbox1);
 		state = STOPPED;
 #ifdef DEBUG
 		g_fprintf(stdout, "Timer completed!\n");
@@ -88,6 +93,12 @@ void counter (void) {
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_seconds), seconds);
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_minutes), minutes);
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_hours), hours);
+		sprintf(output, "%02d:%02d:%02d", hours, minutes, seconds);
+
+		gtk_label_set_text(GTK_LABEL(timer_display), output);
+		markup = g_markup_printf_escaped("<span font=\"48\" weight=\"heavy\"><tt>%s</tt></span>", output);
+		gtk_label_set_markup(GTK_LABEL(timer_display), markup);
+		g_free (markup);
 #ifdef DEBUG
 		g_fprintf(stdout, "Seconds: %02d   Minutes: %02d   Hours: %02d\n", seconds, minutes, hours);
 #endif
@@ -104,6 +115,8 @@ void on_timer_button_clicked (void) {
 	if(state == STOPPED) {
 		button_timer_stop();
 		gtk_widget_set_sensitive(GTK_WIDGET(button_reset), TRUE);
+		gtk_widget_show(box_timer);
+		gtk_widget_hide(hbox1);
 		state = STARTED;
 	} else if(state == PAUSED) {
 		button_timer_stop();
@@ -119,19 +132,24 @@ void on_reset_button_clicked (void) {
 		state = STOPPED;
 		button_timer_start(TRUE);
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_seconds), 0);
+		gtk_widget_hide(box_timer);
+		gtk_widget_show(hbox1);
 	}
 }
 
 int main (void) {
-	GtkWidget *window, *vbox, *hbox1, *hbox2;
+	GtkWidget *window, *vbox, *hbox2;
 
 	gtk_init(NULL, NULL);
 	notify_init("Gtimer");
-	ca_context_create(&c);
+	ca_context_create(&sound);
 
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	hbox1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+	box_timer = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+
+	timer_display = gtk_label_new(NULL);
 
 	sadj = gtk_adjustment_new(0, 0, 60, 1, 1, 1);
 	madj = gtk_adjustment_new(0, 0, 60, 1, 1, 1);
@@ -140,8 +158,11 @@ int main (void) {
 	spin_minutes = gtk_spin_button_new(madj, 1, 0);
 	spin_hours = gtk_spin_button_new(hadj, 24, 0);
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(spin_seconds), TRUE);
+	g_object_set (spin_seconds, "shadow-type", GTK_SHADOW_IN, NULL);
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(spin_minutes), TRUE);
+	g_object_set (spin_minutes, "shadow-type", GTK_SHADOW_IN, NULL);
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(spin_hours), TRUE);
+	g_object_set (spin_hours, "shadow-type", GTK_SHADOW_IN, NULL);
 
 	button_timer = gtk_button_new();
 	button_timer_start(TRUE);
@@ -151,8 +172,11 @@ int main (void) {
 	gtk_box_pack_start(GTK_BOX(hbox1), spin_hours, TRUE, TRUE, 5);
 	gtk_box_pack_start(GTK_BOX(hbox1), spin_minutes, TRUE, TRUE, 5);
 	gtk_box_pack_start(GTK_BOX(hbox1), spin_seconds, TRUE, TRUE, 5);
+	gtk_box_pack_start(GTK_BOX(box_timer), timer_display, TRUE, TRUE, 5);
 	gtk_box_pack_start(GTK_BOX(hbox2), button_timer, TRUE, TRUE, 5);
 	gtk_box_pack_start(GTK_BOX(hbox2), button_reset, TRUE, TRUE, 5);
+	gtk_container_add(GTK_CONTAINER(vbox), box_timer);
+	gtk_widget_hide(box_timer);
 	gtk_container_add(GTK_CONTAINER(vbox), hbox1);
 	gtk_container_add(GTK_CONTAINER(vbox), hbox2);
 
@@ -169,5 +193,5 @@ int main (void) {
 
 	gtk_main();
 	notify_uninit();
-	ca_context_destroy(c);
+	ca_context_destroy(sound);
 }

@@ -6,7 +6,7 @@ GTimeUtils
 Installation
 ------------
 
-You'll need the GTK 3.x libraries and headers installed and ready to go. To
+You'll need the GTK 3.x, libnotify and libcanberra libraries and headers installed and ready to go. To
 build, simply run these commands:
 
 	$ make

@@ -1,7 +1,8 @@
 jCC      = gcc
-LIBS    = `pkg-config --cflags --libs gtk+-3.0 libnotify libcanberra`
-CFLAGS  = -std=c99 -Wall -Wextra
-
+CFLAGS   = -std=c99 -Wall -Wextra
+LIBS_TIMER = `pkg-config --cflags --libs gtk+-3.0 libnotify libcanberra`
+LIBS_STOPW = `pkg-config --cflags --libs gtk+-3.0`
+ 
 PREFIX   ?= /usr/local
 BINPREFIX = $(PREFIX)/bin
 
@@ -12,10 +13,10 @@ debug: CFLAGS += -O0 -g -pedantic -DDEBUG
 debug: all
 
 gstopwatch: gstopwatch.c
-	$(CC) gstopwatch.c -o gstopwatch $(CFLAGS) $(LIBS)
+	$(CC) gstopwatch.c -o gstopwatch $(CFLAGS) $(LIBS_STOPW)
 
 gtimer: gtimer.c
-	$(CC) gtimer.c -o gtimer $(CFLAGS) $(LIBS)
+	$(CC) gtimer.c -o gtimer $(CFLAGS) $(LIBS_TIMER)
 
 install:
 	mkdir -p $(DESTDIR)/$(BINPREFIX)
