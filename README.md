@@ -14,7 +14,7 @@ build, simply run these commands:
 
 ToDo
 ----
-* Gtimer: improve ui aestatics
+* Gtimer: Offset spinbuttons, so normal buttons dont move down when timer is shown
 
 Bugs
 ----
