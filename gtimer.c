@@ -18,8 +18,9 @@
  */
 
 #include <gtk/gtk.h>
-#include <libnotify/notify.h>
+#include <canberra.h>
 #include <glib/gprintf.h>
+#include <libnotify/notify.h>
 
 enum {
     STARTED,
@@ -28,6 +29,7 @@ enum {
 };
 
 GTimer *timer;
+ca_context *c;
 GdkColor color;
 GtkAdjustment *sadj, *madj, *hadj;
 gint elapsed, seconds, minutes, hours, state = STOPPED;
@@ -58,6 +60,8 @@ void notify (void) {
 	notify_notification_show(gtimer_notify, &error_notify);
 	if(error_notify)
 		g_fprintf(stderr, "Can not initialize notification: %s\n", error_notify->message);
+
+	ca_context_play(c, 0, CA_PROP_APPLICATION_NAME, "Gtimer", CA_PROP_EVENT_ID, "complete-copy", CA_PROP_MEDIA_ROLE, "notification",  CA_PROP_APPLICATION_ICON_NAME, "clocks", CA_PROP_CANBERRA_CACHE_CONTROL, "never", NULL);
 }
 
 void counter (void) {
@@ -123,6 +127,7 @@ int main (void) {
 
 	gtk_init(NULL, NULL);
 	notify_init("Gtimer");
+	ca_context_create(&c);
 
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	hbox1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
@@ -164,4 +169,5 @@ int main (void) {
 
 	gtk_main();
 	notify_uninit();
+	ca_context_destroy(c);
 }

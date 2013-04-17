@@ -1,5 +1,5 @@
 jCC      = gcc
-LIBS    = `pkg-config --cflags --libs gtk+-3.0 libnotify`
+LIBS    = `pkg-config --cflags --libs gtk+-3.0 libnotify libcanberra`
 CFLAGS  = -std=c99 -Wall -Wextra
 
 PREFIX   ?= /usr/local

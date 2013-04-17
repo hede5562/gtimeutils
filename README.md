@@ -14,7 +14,7 @@ build, simply run these commands:
 
 ToDo
 ----
-* Gtimer: sound when timer is done;
+* Gtimer: improve ui aestatics
 
 Bugs
 ----
