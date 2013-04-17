@@ -12,10 +12,6 @@ build, simply run these commands:
 	$ make
 	# make clean install
 
-ToDo
-----
-* Gtimer: Offset spinbuttons, so normal buttons dont move down when timer is shown
-
 Bugs
 ----
 

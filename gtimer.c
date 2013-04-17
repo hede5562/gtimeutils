@@ -76,10 +76,6 @@ void counter (void) {
 		notify();
 		button_timer_start(TRUE);
 		gtk_widget_set_sensitive(button_reset, FALSE);
-		gtk_widget_hide(timer_display);
-		gtk_widget_show(spin_seconds);
-		gtk_widget_show(spin_minutes);
-		gtk_widget_show(spin_hours);
 		state = STOPPED;
 #ifdef DEBUG
 		g_fprintf(stdout, "Timer completed!\n");
@@ -115,10 +111,6 @@ void on_timer_button_clicked (void) {
 	if(state == STOPPED) {
 		button_timer_stop();
 		gtk_widget_set_sensitive(button_reset, TRUE);
-		gtk_widget_hide(spin_seconds);
-		gtk_widget_hide(spin_minutes);
-		gtk_widget_hide(spin_hours);
-		gtk_widget_show(timer_display);
 		state = STARTED;
 	} else if(state == PAUSED) {
 		button_timer_stop();
@@ -137,10 +129,6 @@ void on_reset_button_clicked (void) {
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_minutes), 0);
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_hours), 0);
 		gtk_widget_set_sensitive(button_reset, FALSE);
-		gtk_widget_hide(timer_display);
-		gtk_widget_show(spin_seconds);
-		gtk_widget_show(spin_minutes);
-		gtk_widget_show(spin_hours);
 	}
 }
 
@@ -160,7 +148,7 @@ int main (void) {
 	gtk_box_set_spacing(GTK_BOX(hbox2), 5);
 
 	timer_display = gtk_label_new(NULL);
-	markup = g_markup_printf_escaped("<span font=\"48\" weight=\"heavy\"><tt>%s</tt></span>", "00:00:00");
+	markup = g_markup_printf_escaped("<span font=\"48\" weight=\"heavy\"><tt>%s</tt></span>", "HH:MM:SS");
 	gtk_label_set_markup(GTK_LABEL(timer_display), markup);
 	g_free (markup);
 
@@ -185,7 +173,7 @@ int main (void) {
 	gtk_box_pack_start(GTK_BOX(hbox1), spin_hours, TRUE, FALSE, 5);
 	gtk_box_pack_start(GTK_BOX(hbox1), spin_minutes, TRUE, FALSE, 5);
 	gtk_box_pack_start(GTK_BOX(hbox1), spin_seconds, TRUE, FALSE, 5);
-	gtk_box_pack_start(GTK_BOX(hbox1), timer_display, TRUE, TRUE, 5);
+	gtk_box_pack_start(GTK_BOX(vbox), timer_display, FALSE, TRUE, 5);
 	gtk_box_pack_start(GTK_BOX(hbox2), button_timer, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox2), button_reset, TRUE, TRUE, 0);
 	gtk_container_add(GTK_CONTAINER(vbox), hbox1);
@@ -196,7 +184,6 @@ int main (void) {
 	gtk_window_set_default_icon_name("clocks");
 	gtk_container_add(GTK_CONTAINER(window), vbox);
 	gtk_widget_show_all(window);
-	gtk_widget_hide(timer_display);
 
 	g_timeout_add_seconds(1, (GSourceFunc)timer_function, NULL);
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
