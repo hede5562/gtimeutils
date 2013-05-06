@@ -2,7 +2,7 @@
 
 pkgname=gtimeutils-git
 _gitname=gtimeutils
-pkgver=2013.04.12
+pkgver=2013.04.17
 pkgrel=1
 pkgdesc="A simple stopwatch and timer, written in GTK3"
 arch=('i686' 'x86_64')

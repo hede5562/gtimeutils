@@ -31,7 +31,7 @@ enum {
 GdkColor color;
 ca_context *sound;
 gint state = STOPPED;
-GtkWidget *timer_display, *hbox1, *button_timer, *button_reset, *spin_seconds, *spin_minutes, *spin_hours;
+GtkWidget *timer_display, *hbox1, *entry, *button_timer, *button_reset, *spin_seconds, *spin_minutes, *spin_hours;
 
 void button_timer_stop (void) {
 	gdk_color_parse("#C73333", &color);
@@ -49,10 +49,15 @@ void button_timer_start (gboolean start) {
 }
 
 void notify (void) {
+	const gchar *entry_text;
 	NotifyNotification *notify;
 	GError *error_notify = NULL;
 
-	notify = notify_notification_new("Time is up!", NULL, "clocks");
+	entry_text = gtk_entry_get_text(GTK_ENTRY(entry));
+	if(g_strcmp0(entry_text, "Notification text...") != 0)
+		notify = notify_notification_new(entry_text, NULL, "clocks");
+	else
+		notify = notify_notification_new("Time is up!", NULL, "clocks");
 	notify_notification_set_category(notify, "GTimeUtils");
 	notify_notification_set_urgency(notify, NOTIFY_URGENCY_NORMAL);
 	notify_notification_show(notify, &error_notify);
@@ -76,6 +81,7 @@ void counter (void) {
 		notify();
 		button_timer_start(TRUE);
 		gtk_widget_set_sensitive(button_reset, FALSE);
+		gtk_widget_set_sensitive(entry, TRUE);
 		state = STOPPED;
 #ifdef DEBUG
 		g_fprintf(stdout, "Timer completed!\n");
@@ -111,6 +117,7 @@ void on_timer_button_clicked (void) {
 	if(state == STOPPED) {
 		button_timer_stop();
 		gtk_widget_set_sensitive(button_reset, TRUE);
+		gtk_widget_set_sensitive(entry, FALSE);
 		state = STARTED;
 	} else if(state == PAUSED) {
 		button_timer_stop();
@@ -129,6 +136,7 @@ void on_reset_button_clicked (void) {
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_minutes), 0);
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_hours), 0);
 		gtk_widget_set_sensitive(button_reset, FALSE);
+		gtk_widget_set_sensitive(entry, TRUE);
 	}
 }
 
@@ -165,6 +173,9 @@ int main (void) {
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(spin_hours), TRUE);
 	g_object_set (spin_hours, "shadow-type", GTK_SHADOW_IN, NULL);
 
+	entry = gtk_entry_new();
+	gtk_entry_set_text(GTK_ENTRY(entry), "Notification text...");
+	
 	button_timer = gtk_button_new();
 	button_timer_start(TRUE);
 	button_reset = gtk_button_new_with_label("Reset");
@@ -177,6 +188,7 @@ int main (void) {
 	gtk_box_pack_start(GTK_BOX(hbox2), button_timer, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox2), button_reset, TRUE, TRUE, 0);
 	gtk_container_add(GTK_CONTAINER(vbox), hbox1);
+	gtk_box_pack_start(GTK_BOX(vbox), entry, FALSE, TRUE, 5);
 	gtk_container_add(GTK_CONTAINER(vbox), hbox2);
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
