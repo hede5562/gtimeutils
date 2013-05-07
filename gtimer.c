@@ -22,6 +22,7 @@
 #include <glib/gprintf.h>
 #include <libnotify/notify.h>
 #include <stdlib.h>
+
 enum {
     STARTED,
     PAUSED,
@@ -58,7 +59,6 @@ void button_timer_start (gboolean start) {
 }
 
 void notify (void) {
-	/*const gchar *entry_text;*/
 	NotifyNotification *notify;
 	GError *error_notify = NULL;
 
