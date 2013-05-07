@@ -21,7 +21,7 @@
 #include <canberra.h>
 #include <glib/gprintf.h>
 #include <libnotify/notify.h>
-
+#include <stdlib.h>
 enum {
     STARTED,
     PAUSED,
@@ -30,8 +30,17 @@ enum {
 
 GdkColor color;
 ca_context *sound;
-gint state = STOPPED;
+gint state = STOPPED, hours = 0, minutes = 0, seconds = 0;
+const gchar *entry_text = "Notification text";
 GtkWidget *timer_display, *hbox1, *entry, *button_timer, *button_reset, *spin_seconds, *spin_minutes, *spin_hours;
+
+static GOptionEntry entries[] = {
+	{ "seconds", 's', 0, G_OPTION_ARG_INT, &seconds, "Specify seconds to count down from", NULL },
+	{ "minutes", 'm', 0, G_OPTION_ARG_INT, &minutes, "Specify minutes to count down from", NULL },
+	{ "hours", 'u', 0, G_OPTION_ARG_INT, &hours, "Specify hours to count down from", NULL },
+	{ "text", 't', 0, G_OPTION_ARG_STRING, &entry_text, "Set an alternative notification text", NULL },
+	{ NULL },
+};
 
 void button_timer_stop (void) {
 	gdk_color_parse("#C73333", &color);
@@ -49,7 +58,7 @@ void button_timer_start (gboolean start) {
 }
 
 void notify (void) {
-	const gchar *entry_text;
+	/*const gchar *entry_text;*/
 	NotifyNotification *notify;
 	GError *error_notify = NULL;
 
@@ -69,7 +78,6 @@ void notify (void) {
 
 void counter (void) {
 	gchar *markup, output[100];
-	gint seconds, minutes, hours;
 
 	seconds = gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin_seconds));
 	minutes = gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin_minutes));
@@ -140,14 +148,23 @@ void on_reset_button_clicked (void) {
 	}
 }
 
-int main (void) {
+int main (int argc, char *argv[]) {
+	GError *error_parsearg = NULL;
+	GOptionContext *context;
 	GtkWidget *window, *vbox, *hbox2;
 	GtkAdjustment *sadj, *madj, *hadj;
 	gchar *markup;
 
-	gtk_init(NULL, NULL);
+	gtk_init(&argc, &argv);
 	notify_init("Gtimer");
 	ca_context_create(&sound);
+
+	context = g_option_context_new("- a simple countdown timer");
+	g_option_context_add_main_entries(context, entries, NULL);
+	if (!g_option_context_parse (context, &argc, &argv, &error_parsearg)) {
+		g_fprintf (stderr, "%s\n", error_parsearg->message);
+		exit(1);
+	}
 
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
@@ -167,14 +184,17 @@ int main (void) {
 	spin_minutes = gtk_spin_button_new(madj, 1, 0);
 	spin_hours = gtk_spin_button_new(hadj, 24, 0);
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(spin_seconds), TRUE);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_seconds), seconds);
 	g_object_set (spin_seconds, "shadow-type", GTK_SHADOW_IN, NULL);
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(spin_minutes), TRUE);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_minutes), minutes);
 	g_object_set (spin_minutes, "shadow-type", GTK_SHADOW_IN, NULL);
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(spin_hours), TRUE);
+	gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_hours), hours);
 	g_object_set (spin_hours, "shadow-type", GTK_SHADOW_IN, NULL);
 
 	entry = gtk_entry_new();
-	gtk_entry_set_text(GTK_ENTRY(entry), "Notification text...");
+	gtk_entry_set_text(GTK_ENTRY(entry), entry_text);
 	
 	button_timer = gtk_button_new();
 	button_timer_start(TRUE);
@@ -205,4 +225,5 @@ int main (void) {
 	gtk_main();
 	notify_uninit();
 	ca_context_destroy(sound);
+	g_option_context_free(context); 
 }

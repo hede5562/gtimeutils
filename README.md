@@ -3,6 +3,16 @@ GTimeUtils
 
 **A simple stopwatch and timer, written in GTK3.**
 
+Usage
+-----
+
+A small word about the usage of, for now, Gtimer. Gtimer can take four (five if you count the help message) command line arguments:
+
+	-s, --seconds     Specify seconds to count down from
+	-m, --minutes     Specify minutes to count down from
+	-u, --hours       Specify hours to count down from
+	-t, --text        Set an alternative notification text
+
 Installation
 ------------
 
