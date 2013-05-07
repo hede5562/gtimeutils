@@ -31,8 +31,9 @@ enum {
 
 GdkColor color;
 ca_context *sound;
-gint state = STOPPED, hours = 0, minutes = 0, seconds = 0;
+static gboolean start_on_run = FALSE;
 const gchar *entry_text = "Notification text";
+gint state = STOPPED, hours = 0, minutes = 0, seconds = 0;
 GtkWidget *timer_display, *hbox1, *entry, *button_timer, *button_reset, *spin_seconds, *spin_minutes, *spin_hours;
 
 static GOptionEntry entries[] = {
@@ -40,6 +41,7 @@ static GOptionEntry entries[] = {
 	{ "minutes", 'm', 0, G_OPTION_ARG_INT, &minutes, "Specify minutes to count down from", NULL },
 	{ "hours", 'u', 0, G_OPTION_ARG_INT, &hours, "Specify hours to count down from", NULL },
 	{ "text", 't', 0, G_OPTION_ARG_STRING, &entry_text, "Set an alternative notification text", NULL },
+	{ "run", 'r', 0, G_OPTION_ARG_NONE, &start_on_run, "Immediately start the countdown", NULL },
 	{ NULL },
 };
 
@@ -91,6 +93,7 @@ void counter (void) {
 		gtk_widget_set_sensitive(button_reset, FALSE);
 		gtk_widget_set_sensitive(entry, TRUE);
 		state = STOPPED;
+		start_on_run = FALSE;
 #ifdef DEBUG
 		g_fprintf(stdout, "Timer completed!\n");
 #endif
@@ -116,7 +119,7 @@ void counter (void) {
 }
 
 gboolean timer_function (void) {
-	if(state == STARTED)
+	if(state == STARTED || start_on_run)
 		counter();
 	return TRUE;
 }

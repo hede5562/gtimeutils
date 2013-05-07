@@ -12,6 +12,7 @@ A small word about the usage of, for now, Gtimer. Gtimer can take four (five if 
 	-m, --minutes     Specify minutes to count down from
 	-u, --hours       Specify hours to count down from
 	-t, --text        Set an alternative notification text
+	-r, --run         Immediately start the countdown
 
 Installation
 ------------
