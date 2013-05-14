@@ -23,6 +23,11 @@ build, simply run these commands:
 	$ make
 	# make clean install
 
+ToDo
+----
+
+* Gtimer: minimize to tray.
+
 Bugs
 ----
 
