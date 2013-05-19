@@ -171,7 +171,12 @@ int main (int argc, char *argv[]) {
 	GError *error_parsearg = NULL;
 	GOptionContext *context;
 	GtkWidget *window, *vbox, *hbox2;
+#ifdef GTK3
 	GtkAdjustment *sadj, *madj, *hadj;
+#endif
+#ifdef GTK2
+	GtkObject *sadj, *madj, *hadj;
+#endif
 	gchar *markup;
 
 	gtk_init(&argc, &argv);
@@ -191,24 +196,43 @@ int main (int argc, char *argv[]) {
 		gtk_status_icon_set_title(tray_icon, "Gtimer");
 		gtk_status_icon_set_name(tray_icon, "Gtimer");
 	}
-	
+
+#ifdef GTK3
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 	hbox1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+#endif
+#ifdef GTK2
+	vbox = gtk_vbox_new(FALSE, 5);
+	hbox1 = gtk_hbox_new(FALSE, 0);
+	hbox2 = gtk_hbox_new(FALSE, 0);
+#endif
+
 	gtk_box_set_spacing(GTK_BOX(hbox2), 5);
+	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
 	timer_display = gtk_label_new(NULL);
 	markup = g_markup_printf_escaped("<span font=\"48\" weight=\"heavy\"><tt>%s</tt></span>", "HH:MM:SS");
 	gtk_label_set_markup(GTK_LABEL(timer_display), markup);
 	g_free (markup);
 
+#ifdef GTK3
 	sadj = gtk_adjustment_new(0, 0, 60, 1, 1, 1);
 	madj = gtk_adjustment_new(0, 0, 60, 1, 1, 1);
 	hadj = gtk_adjustment_new(0, 0, 24, 1, 1, 1);
 	spin_seconds = gtk_spin_button_new(sadj, 1, 0);
 	spin_minutes = gtk_spin_button_new(madj, 1, 0);
 	spin_hours = gtk_spin_button_new(hadj, 24, 0);
+#endif
+#ifdef GTK2
+	sadj = gtk_adjustment_new(0, 0, 60, 1, 1, 0);
+	madj = gtk_adjustment_new(0, 0, 60, 1, 1, 0);
+	hadj = gtk_adjustment_new(0, 0, 24, 1, 1, 0);
+	spin_seconds = gtk_spin_button_new(GTK_ADJUSTMENT(sadj), 1, 0);
+	spin_minutes = gtk_spin_button_new(GTK_ADJUSTMENT(madj), 1, 0);
+	spin_hours = gtk_spin_button_new(GTK_ADJUSTMENT(hadj), 1, 0);
+#endif
+
 	gtk_spin_button_set_wrap(GTK_SPIN_BUTTON(spin_seconds), TRUE);
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_seconds), seconds);
 	g_object_set (spin_seconds, "shadow-type", GTK_SHADOW_IN, NULL);

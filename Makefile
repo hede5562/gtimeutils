@@ -1,8 +1,10 @@
-jCC      = gcc
-CFLAGS   = -std=c99 -Wall -Wextra
-LIBS_TIMER = `pkg-config --cflags --libs gtk+-3.0 libnotify libcanberra`
-LIBS_STOPW = `pkg-config --cflags --libs gtk+-3.0`
- 
+CC       = gcc
+GTK     ?= 3
+CFLAGS   = -std=c99 -Wall -Wextra -DGTK${GTK}
+
+LIBS_TIMER = $(shell pkg-config --cflags --libs gtk+-${GTK}.0 libnotify libcanberra)
+LIBS_STOPW = $(shell pkg-config --cflags --libs gtk+-${GTK}.0 libnotify libcanberra)
+
 PREFIX   ?= /usr/local
 BINPREFIX = $(PREFIX)/bin
 

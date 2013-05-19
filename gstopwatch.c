@@ -127,8 +127,14 @@ int main (void) {
 
 	gtk_init(NULL, NULL);
 
+#ifdef GTK3
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+#endif
+#ifdef GTK2
+	vbox = gtk_vbox_new(FALSE, 5);
+	hbox = gtk_hbox_new(FALSE, 5);
+#endif
 	stopwatch_display = gtk_label_new("");
 	button_stopwatch = gtk_button_new_with_label("Start");
 	gdk_color_parse("#67953C", &color);

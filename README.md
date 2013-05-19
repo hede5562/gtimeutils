@@ -1,7 +1,7 @@
 GTimeUtils
 =========
 
-**A simple stopwatch and timer, written in GTK3.**
+**A simple stopwatch and timer, written in GTK.**
 
 Usage
 -----
@@ -17,10 +17,11 @@ A small word about the usage of, for now, Gtimer. Gtimer can take four (five if 
 Installation
 ------------
 
-You'll need the GTK 3.x, libnotify and libcanberra libraries and headers installed and ready to go. To
+Gtimeutils supports both GTK 2.x and GTK 3.x. You can choose which version to built at compile time. By default GTK 3.x will be used.
+You'll need your chosen GTK version's headers with the libnotify and libcanberra headers installed and ready to go. To
 build, simply run these commands:
 
-	$ make
+	$ make -GTK3 # or make -GTK2
 	# make clean install
 
 ToDo
@@ -35,6 +36,9 @@ For any bug or request [fill an issue][bug] on [GitHub][ghp].
 
   [bug]: https://github.com/Unia/gtimeutils/issues
   [ghp]: https://github.com/Unia/gtimeutils
+
+* Gtimer: notification text.
+* Gtimer: reset output when reset is pressed.
 
 License
 -------

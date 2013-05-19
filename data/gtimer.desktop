@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Gtimer
-GenericName=A simple countdown timer, written in GTK3.
+GenericName=A simple countdown timer, written in GTK.
 Comment=Set a time and be notified when it's done.
 Icon=clocks
 Terminal=false
