@@ -17,11 +17,13 @@ A small word about the usage of, for now, Gtimer. Gtimer can take four (five if 
 Installation
 ------------
 
-Gtimeutils supports both GTK 2.x and GTK 3.x. You can choose which version to built at compile time. By default GTK 3.x will be used.
+GTimeUtils supports both GTK 2.x and GTK 3.x. You can choose which version to built at compile time. By default GTK 3.x will be used.
 You'll need your chosen GTK version's headers with the libnotify and libcanberra headers installed and ready to go. To
 build, simply run these commands:
 
-	$ make -GTK3 # or make -GTK2
+	$ make -GTK3
+	  or
+	$ make -GTK2
 	# make clean install
 
 ToDo
