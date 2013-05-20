@@ -216,18 +216,15 @@ int main (int argc, char *argv[]) {
 	gtk_label_set_markup(GTK_LABEL(timer_display), markup);
 	g_free (markup);
 
+	sadj = gtk_adjustment_new(0, 0, 60, 1, 1, 0);
+	madj = gtk_adjustment_new(0, 0, 60, 1, 1, 0);
+	hadj = gtk_adjustment_new(0, 0, 24, 1, 1, 0);
 #ifdef GTK3
-	sadj = gtk_adjustment_new(0, 0, 60, 1, 1, 1);
-	madj = gtk_adjustment_new(0, 0, 60, 1, 1, 1);
-	hadj = gtk_adjustment_new(0, 0, 24, 1, 1, 1);
 	spin_seconds = gtk_spin_button_new(sadj, 1, 0);
 	spin_minutes = gtk_spin_button_new(madj, 1, 0);
 	spin_hours = gtk_spin_button_new(hadj, 24, 0);
 #endif
 #ifdef GTK2
-	sadj = gtk_adjustment_new(0, 0, 60, 1, 1, 0);
-	madj = gtk_adjustment_new(0, 0, 60, 1, 1, 0);
-	hadj = gtk_adjustment_new(0, 0, 24, 1, 1, 0);
 	spin_seconds = gtk_spin_button_new(GTK_ADJUSTMENT(sadj), 1, 0);
 	spin_minutes = gtk_spin_button_new(GTK_ADJUSTMENT(madj), 1, 0);
 	spin_hours = gtk_spin_button_new(GTK_ADJUSTMENT(hadj), 1, 0);
