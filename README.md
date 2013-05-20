@@ -39,9 +39,6 @@ For any bug or request [fill an issue][bug] on [GitHub][ghp].
   [bug]: https://github.com/Unia/gtimeutils/issues
   [ghp]: https://github.com/Unia/gtimeutils
 
-* Gtimer: notification text.
-* Gtimer: reset output when reset is pressed.
-
 License
 -------
 

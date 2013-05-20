@@ -46,6 +46,14 @@ static GOptionEntry entries[] = {
 	{ NULL },
 };
 
+void reset_display (void) {
+	gchar *markup;
+
+	markup = g_markup_printf_escaped("<span font=\"48\" weight=\"heavy\"><tt>%s</tt></span>", "HH:MM:SS");
+	gtk_label_set_markup(GTK_LABEL(timer_display), markup);
+	g_free (markup);
+}
+
 void button_timer_stop (void) {
 	gdk_color_parse("#C73333", &color);
 	gtk_widget_modify_fg(button_timer, GTK_STATE_NORMAL, &color);
@@ -66,7 +74,7 @@ void notify (void) {
 	GError *error_notify = NULL;
 
 	entry_text = gtk_entry_get_text(GTK_ENTRY(entry));
-	if(g_strcmp0(entry_text, "Notification text...") != 0)
+	if(g_strcmp0(entry_text, "Notification text") != 0)
 		notify = notify_notification_new(entry_text, NULL, "clocks");
 	else
 		notify = notify_notification_new("Time is up!", NULL, "clocks");
@@ -155,6 +163,7 @@ void on_reset_button_clicked (void) {
 	if(state == PAUSED || state == STARTED) {
 		state = STOPPED;
 		button_timer_start(TRUE);
+		reset_display();
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_seconds), 0);
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_minutes), 0);
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_hours), 0);
@@ -177,7 +186,6 @@ int main (int argc, char *argv[]) {
 #ifdef GTK2
 	GtkObject *sadj, *madj, *hadj;
 #endif
-	gchar *markup;
 
 	gtk_init(&argc, &argv);
 	notify_init("Gtimer");
@@ -212,17 +220,15 @@ int main (int argc, char *argv[]) {
 	gtk_container_set_border_width(GTK_CONTAINER(vbox), 5);
 
 	timer_display = gtk_label_new(NULL);
-	markup = g_markup_printf_escaped("<span font=\"48\" weight=\"heavy\"><tt>%s</tt></span>", "HH:MM:SS");
-	gtk_label_set_markup(GTK_LABEL(timer_display), markup);
-	g_free (markup);
-
+	reset_display();
+	
 	sadj = gtk_adjustment_new(0, 0, 60, 1, 1, 0);
 	madj = gtk_adjustment_new(0, 0, 60, 1, 1, 0);
 	hadj = gtk_adjustment_new(0, 0, 24, 1, 1, 0);
 #ifdef GTK3
 	spin_seconds = gtk_spin_button_new(sadj, 1, 0);
 	spin_minutes = gtk_spin_button_new(madj, 1, 0);
-	spin_hours = gtk_spin_button_new(hadj, 24, 0);
+	spin_hours = gtk_spin_button_new(hadj, 1, 0);
 #endif
 #ifdef GTK2
 	spin_seconds = gtk_spin_button_new(GTK_ADJUSTMENT(sadj), 1, 0);
