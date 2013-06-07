@@ -26,11 +26,6 @@ build, simply run these commands:
 	$ make -GTK2
 	# make clean install
 
-ToDo
-----
-
-* Gtimer: minimize to tray.
-
 Bugs
 ----
 

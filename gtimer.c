@@ -31,7 +31,6 @@ enum {
 
 GdkColor color;
 ca_context *sound;
-GtkStatusIcon *tray_icon;
 static gboolean start_on_run = FALSE;
 const gchar *entry_text = "Notification text";
 gint state = STOPPED, hours = 0, minutes = 0, seconds = 0;
@@ -88,7 +87,7 @@ void notify (void) {
 }
 
 void counter (void) {
-	gchar *markup, tray_text[120], output[100];
+	gchar *markup, output[100];
 
 	seconds = gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin_seconds));
 	minutes = gtk_spin_button_get_value(GTK_SPIN_BUTTON(spin_minutes));
@@ -103,10 +102,6 @@ void counter (void) {
 		gtk_widget_set_sensitive(entry, TRUE);
 		state = STOPPED;
 		start_on_run = FALSE;
-		if(gtk_status_icon_is_embedded(tray_icon) == TRUE) {
-			gtk_status_icon_set_tooltip_text(tray_icon, NULL);
-			gtk_status_icon_set_visible(tray_icon, FALSE);
-		}
 #ifdef DEBUG
 		g_fprintf(stdout, "Timer completed!\n");
 #endif
@@ -126,10 +121,6 @@ void counter (void) {
 		gtk_label_set_markup(GTK_LABEL(timer_display), markup);
 		g_free (markup);
 
-		if(gtk_status_icon_is_embedded(tray_icon) == TRUE) {
-			sprintf(tray_text, "Gtimer is running: %s", output);
-			gtk_status_icon_set_tooltip_text(tray_icon, tray_text);
-		}
 #ifdef DEBUG
 		g_fprintf(stdout, "Seconds: %02d   Minutes: %02d   Hours: %02d\n", seconds, minutes, hours);
 #endif
@@ -147,8 +138,6 @@ void on_timer_button_clicked (void) {
 		button_timer_stop();
 		gtk_widget_set_sensitive(button_reset, TRUE);
 		gtk_widget_set_sensitive(entry, FALSE);
-		if(gtk_status_icon_is_embedded(tray_icon) == FALSE) /*this doesn't add up. re-check this with a proper system tray*/
-			gtk_status_icon_set_visible(tray_icon, TRUE);
 		state = STARTED;
 	} else if(state == PAUSED) {
 		button_timer_stop();
@@ -169,10 +158,6 @@ void on_reset_button_clicked (void) {
 		gtk_spin_button_set_value(GTK_SPIN_BUTTON(spin_hours), 0);
 		gtk_widget_set_sensitive(button_reset, FALSE);
 		gtk_widget_set_sensitive(entry, TRUE);
-		if(gtk_status_icon_is_embedded(tray_icon) == TRUE) {
-			gtk_status_icon_set_tooltip_text(tray_icon, NULL);
-			gtk_status_icon_set_visible(tray_icon, FALSE);
-		}
 	}
 }
 
@@ -196,13 +181,6 @@ int main (int argc, char *argv[]) {
 	if (!g_option_context_parse (context, &argc, &argv, &error_parsearg)) {
 		g_fprintf (stderr, "%s\n", error_parsearg->message);
 		exit(1);
-	}
-
-	tray_icon = gtk_status_icon_new_from_icon_name("clocks");
-	if(gtk_status_icon_is_embedded(tray_icon) == FALSE) { /*this doesn't add up. re-check this with a proper system tray*/
-		gtk_status_icon_set_visible(tray_icon, FALSE);
-		gtk_status_icon_set_title(tray_icon, "Gtimer");
-		gtk_status_icon_set_name(tray_icon, "Gtimer");
 	}
 
 #ifdef GTK3
