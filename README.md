@@ -1,7 +1,7 @@
 GTimeUtils
 =========
 
-**A simple stopwatch and timer, written in GTK.**
+**A simple stopwatch and timer, written in GTK3.**
 
 Usage
 -----
@@ -17,14 +17,26 @@ A small word about the usage of, for now, Gtimer. Gtimer can take four (five if 
 Installation
 ------------
 
-GTimeUtils supports both GTK 2.x and GTK 3.x. You can choose which version to built at compile time. By default GTK 3.x will be used.
-You'll need your chosen GTK version's headers with the libnotify and libcanberra headers installed and ready to go. To
+GTimeUtils is written in GTK 3.x, so you need GTK3's headers with the libnotify and libcanberra headers installed and ready to go. To
 build, simply run these commands:
 
-	$ make -GTK3
-	  or
-	$ make -GTK2
+	$ ./autogen.sh
+	$ make
 	# make clean install
+
+Translations
+-----------
+
+You can help translate GTimeUtils in your language!
+To do so, simply follow these steps:
+
+	$ cd po
+	$ intltool-update --pot
+	$ mv gtimeutils.pot <language code>.po
+
+Where `<language code>` is, obviously, the code of your language (e.g. `nl` for Dutch, `fr` for French, `en` for English...)
+Edit the `LINGUAS` file and add your language code. Please keep the list alphabetically.
+Lastly, open the .po file you just generated and translate all the strings. Don't forget to fill in the information in the header!
 
 Bugs
 ----
@@ -43,4 +55,4 @@ License
 
 You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-**Copyright © 2013** Jente (jthidskes at outlook dot com)
+**Copyright © 2013** Jente Hidskes <jthidskes@outlook.com>

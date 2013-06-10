@@ -1,6 +1,6 @@
 # List of source files containing translatable strings.
 
-data/gstopwatch.desktop
-data/gtimer.desktop
+data/gstopwatch.desktop.in
+data/gtimer.desktop.in
 src/gstopwatch.c
 src/gtimer.c
