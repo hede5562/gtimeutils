@@ -42,7 +42,7 @@ static GOptionEntry entries[] = {
 	{ "seconds", 's', 0, G_OPTION_ARG_INT, &seconds, N_("Specify seconds to count down from"), NULL },
 	{ "minutes", 'm', 0, G_OPTION_ARG_INT, &minutes, N_("Specify minutes to count down from"), NULL },
 	{ "hours", 'u', 0, G_OPTION_ARG_INT, &hours, N_("Specify hours to count down from"), NULL },
-	{ "text", 't', 0, G_OPTION_ARG_STRING, &entry_text, N_("Set an alternative notification text", NULL },
+	{ "text", 't', 0, G_OPTION_ARG_STRING, &entry_text, N_("Set an alternative notification text"), NULL },
 	{ "run", 'r', 0, G_OPTION_ARG_NONE, &start_on_run, N_("Immediately start the countdown"), NULL },
 	{ NULL },
 };
