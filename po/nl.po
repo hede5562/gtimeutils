@@ -6,10 +6,10 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-10 19:38+0200\n"
-"PO-Revision-Date: 2013-06-10 19:38+0200\n"
+"POT-Creation-Date: 2013-06-10 20:27+0200\n"
+"PO-Revision-Date: 2013-06-10 20:27+0200\n"
 "Last-Translator: Jente Hidskes <jthidskes@outlook.com>\n"
 "Language-Team: Dutch\n"
 "Language: nl\n"
@@ -33,30 +33,34 @@ msgstr "Een simpele aftel timer, geschreven in GTK3."
 msgid "Set a time and be notified when it's done."
 msgstr "Stel een tijd in en word gewaarschuwd als deze om is."
 
-#: ../src/gstopwatch.c:87 ../src/gstopwatch.c:95
+#: ../src/gstopwatch.c:87 ../src/gstopwatch.c:95 ../src/gtimer.c:61
 msgid "Stop"
-msgstr "Stop"
+msgstr "Stoppen"
 
 #: ../src/gstopwatch.c:89 ../src/gstopwatch.c:96 ../src/gstopwatch.c:154
 msgid "Lap"
 msgstr "Ronde"
 
-#: ../src/gstopwatch.c:102
+#: ../src/gstopwatch.c:102 ../src/gtimer.c:70
 msgid "Continue"
 msgstr "Doorgaan"
 
 #: ../src/gstopwatch.c:104 ../src/gstopwatch.c:119 ../src/gstopwatch.c:144
-#: ../src/gtimer.c:221
+#: ../src/gtimer.c:224
 msgid "Reset"
 msgstr "Resetten"
 
-#: ../src/gstopwatch.c:120 ../src/gstopwatch.c:141
+#: ../src/gstopwatch.c:120 ../src/gstopwatch.c:141 ../src/gtimer.c:68
 msgid "Start"
-msgstr "Start"
+msgstr "Starten"
 
 #: ../src/gstopwatch.c:163
 msgid "Time"
 msgstr "Tijd"
+
+#: ../src/gtimer.c:37
+msgid "Notification text"
+msgstr "Notificatie tekst"
 
 #: ../src/gtimer.c:42
 msgid "Specify seconds to count down from"
@@ -77,10 +81,6 @@ msgstr "Stel een alternatieve notificatie tekst in"
 #: ../src/gtimer.c:46
 msgid "Immediately start the countdown"
 msgstr "Begin meteen met aftellen"
-
-#: ../src/gtimer.c:78
-msgid "Notification text"
-msgstr "Notificatie tekst"
 
 #: ../src/gtimer.c:182
 msgid "- a simple countdown timer"

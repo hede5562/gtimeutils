@@ -34,7 +34,7 @@ enum {
 GdkColor color;
 ca_context *sound;
 static gboolean start_on_run = FALSE;
-const gchar *entry_text = "Notification text";
+const gchar *entry_text = _("Notification text");
 gint state = STOPPED, hours = 0, minutes = 0, seconds = 0;
 GtkWidget *timer_display, *hbox1, *entry, *button_timer, *button_reset, *spin_seconds, *spin_minutes, *spin_hours;
 
@@ -58,16 +58,16 @@ void reset_display (void) {
 void button_timer_stop (void) {
 	gdk_color_parse("#C73333", &color);
 	gtk_widget_modify_fg(button_timer, GTK_STATE_NORMAL, &color);
-	gtk_button_set_label(GTK_BUTTON(button_timer), "Stop");
+	gtk_button_set_label(GTK_BUTTON(button_timer), _("Stop"));
 }
 
 void button_timer_start (gboolean start) {
 	gdk_color_parse("#67953C", &color);
 	gtk_widget_modify_fg(button_timer, GTK_STATE_NORMAL, &color);
 	if(start)
-		gtk_button_set_label(GTK_BUTTON(button_timer), "Start");
+		gtk_button_set_label(GTK_BUTTON(button_timer), _("Start"));
 	else
-		gtk_button_set_label(GTK_BUTTON(button_timer), "Continue");
+		gtk_button_set_label(GTK_BUTTON(button_timer), _("Continue"));
 }
 
 void notify (void) {
@@ -75,7 +75,7 @@ void notify (void) {
 	GError *error_notify = NULL;
 
 	entry_text = gtk_entry_get_text(GTK_ENTRY(entry));
-	if(g_strcmp0(entry_text, _("Notification text")) != 0)
+	if(g_strcmp0(entry_text, "Notification text") != 0)
 		notify = notify_notification_new(entry_text, NULL, "clocks");
 	else
 		notify = notify_notification_new("Time is up!", NULL, "clocks");
