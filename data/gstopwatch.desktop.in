@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
 Name=Gstopwatch
-_GenericName=A simple stopwatch, written in GTK.
-_Comment=Start, pause, stop the timer with the ability to save laps.
+_GenericName=A simple stopwatch, written in GTK3.
+_Comment=Start, pause and stop the stopwatch with the ability to save laps.
 Icon=clocks
 Terminal=false
 Exec=gstopwatch

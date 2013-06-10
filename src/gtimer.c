@@ -39,11 +39,11 @@ gint state = STOPPED, hours = 0, minutes = 0, seconds = 0;
 GtkWidget *timer_display, *hbox1, *entry, *button_timer, *button_reset, *spin_seconds, *spin_minutes, *spin_hours;
 
 static GOptionEntry entries[] = {
-	{ "seconds", 's', 0, G_OPTION_ARG_INT, &seconds, "Specify seconds to count down from", NULL },
-	{ "minutes", 'm', 0, G_OPTION_ARG_INT, &minutes, "Specify minutes to count down from", NULL },
-	{ "hours", 'u', 0, G_OPTION_ARG_INT, &hours, "Specify hours to count down from", NULL },
-	{ "text", 't', 0, G_OPTION_ARG_STRING, &entry_text, "Set an alternative notification text", NULL },
-	{ "run", 'r', 0, G_OPTION_ARG_NONE, &start_on_run, "Immediately start the countdown", NULL },
+	{ "seconds", 's', 0, G_OPTION_ARG_INT, &seconds, _("Specify seconds to count down from"), NULL },
+	{ "minutes", 'm', 0, G_OPTION_ARG_INT, &minutes, _("Specify minutes to count down from"), NULL },
+	{ "hours", 'u', 0, G_OPTION_ARG_INT, &hours, _("Specify hours to count down from"), NULL },
+	{ "text", 't', 0, G_OPTION_ARG_STRING, &entry_text, _("Set an alternative notification text"), NULL },
+	{ "run", 'r', 0, G_OPTION_ARG_NONE, &start_on_run, _("Immediately start the countdown"), NULL },
 	{ NULL },
 };
 
@@ -75,7 +75,7 @@ void notify (void) {
 	GError *error_notify = NULL;
 
 	entry_text = gtk_entry_get_text(GTK_ENTRY(entry));
-	if(g_strcmp0(entry_text, "Notification text") != 0)
+	if(g_strcmp0(entry_text, _("Notification text")) != 0)
 		notify = notify_notification_new(entry_text, NULL, "clocks");
 	else
 		notify = notify_notification_new("Time is up!", NULL, "clocks");
@@ -179,7 +179,7 @@ int main (int argc, char *argv[]) {
 	notify_init("Gtimer");
 	ca_context_create(&sound);
 
-	context = g_option_context_new("- a simple countdown timer");
+	context = g_option_context_new(_("- a simple countdown timer"));
 	g_option_context_add_main_entries(context, entries, NULL);
 	if (!g_option_context_parse (context, &argc, &argv, &error_parsearg)) {
 		g_fprintf (stderr, "%s\n", error_parsearg->message);
@@ -218,7 +218,7 @@ int main (int argc, char *argv[]) {
 	
 	button_timer = gtk_button_new();
 	button_timer_start(TRUE);
-	button_reset = gtk_button_new_with_label("Reset");
+	button_reset = gtk_button_new_with_label(_("Reset"));
 	gtk_widget_set_sensitive(button_reset, FALSE);
 
 	gtk_box_pack_start(GTK_BOX(hbox1), spin_hours, TRUE, FALSE, 5);

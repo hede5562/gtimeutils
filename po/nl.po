@@ -1,0 +1,87 @@
+# Dutch translation for GTimeUtils.
+# Copyright (C) 2013 Jente Hidskes <jthidskes@outlook.com>
+# This file is distributed under the same license as the GTimeUtils package.
+# Jente Hidskes <jthidskes@outlook.com>, 2013.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-06-10 19:38+0200\n"
+"PO-Revision-Date: 2013-06-10 19:38+0200\n"
+"Last-Translator: Jente Hidskes <jthidskes@outlook.com>\n"
+"Language-Team: Dutch\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/gstopwatch.desktop.in.h:1
+msgid "A simple stopwatch, written in GTK3."
+msgstr "Een simpele stopwatch, geschreven in GTK3."
+
+#: ../data/gstopwatch.desktop.in.h:2
+msgid "Start, pause and stop the stopwatch with the ability to save laps."
+msgstr "Start, pauzeer en stop de stopwatch met de mogelijkheid om rondes bij te houden."
+
+#: ../data/gtimer.desktop.in.h:1
+msgid "A simple countdown timer, written in GTK3."
+msgstr "Een simpele aftel timer, geschreven in GTK3."
+
+#: ../data/gtimer.desktop.in.h:2
+msgid "Set a time and be notified when it's done."
+msgstr "Stel een tijd in en word gewaarschuwd als deze om is."
+
+#: ../src/gstopwatch.c:87 ../src/gstopwatch.c:95
+msgid "Stop"
+msgstr "Stop"
+
+#: ../src/gstopwatch.c:89 ../src/gstopwatch.c:96 ../src/gstopwatch.c:154
+msgid "Lap"
+msgstr "Ronde"
+
+#: ../src/gstopwatch.c:102
+msgid "Continue"
+msgstr "Doorgaan"
+
+#: ../src/gstopwatch.c:104 ../src/gstopwatch.c:119 ../src/gstopwatch.c:144
+#: ../src/gtimer.c:221
+msgid "Reset"
+msgstr "Resetten"
+
+#: ../src/gstopwatch.c:120 ../src/gstopwatch.c:141
+msgid "Start"
+msgstr "Start"
+
+#: ../src/gstopwatch.c:163
+msgid "Time"
+msgstr "Tijd"
+
+#: ../src/gtimer.c:42
+msgid "Specify seconds to count down from"
+msgstr "Specificeer het aantal seconden om van af te tellen"
+
+#: ../src/gtimer.c:43
+msgid "Specify minutes to count down from"
+msgstr "Specificeer het aantal minuten om van af te tellen"
+
+#: ../src/gtimer.c:44
+msgid "Specify hours to count down from"
+msgstr "Specificeer het aantal uren om van af te tellen"
+
+#: ../src/gtimer.c:45
+msgid "Set an alternative notification text"
+msgstr "Stel een alternatieve notificatie tekst in"
+
+#: ../src/gtimer.c:46
+msgid "Immediately start the countdown"
+msgstr "Begin meteen met aftellen"
+
+#: ../src/gtimer.c:78
+msgid "Notification text"
+msgstr "Notificatie tekst"
+
+#: ../src/gtimer.c:182
+msgid "- a simple countdown timer"
+msgstr "- een simpele aftel timer"
