@@ -39,11 +39,11 @@ gint state = STOPPED, hours = 0, minutes = 0, seconds = 0;
 GtkWidget *timer_display, *hbox1, *entry, *button_timer, *button_reset, *spin_seconds, *spin_minutes, *spin_hours;
 
 static GOptionEntry entries[] = {
-	{ "seconds", 's', 0, G_OPTION_ARG_INT, &seconds, _("Specify seconds to count down from"), NULL },
-	{ "minutes", 'm', 0, G_OPTION_ARG_INT, &minutes, _("Specify minutes to count down from"), NULL },
-	{ "hours", 'u', 0, G_OPTION_ARG_INT, &hours, _("Specify hours to count down from"), NULL },
-	{ "text", 't', 0, G_OPTION_ARG_STRING, &entry_text, _("Set an alternative notification text"), NULL },
-	{ "run", 'r', 0, G_OPTION_ARG_NONE, &start_on_run, _("Immediately start the countdown"), NULL },
+	{ "seconds", 's', 0, G_OPTION_ARG_INT, &seconds, N_("Specify seconds to count down from"), NULL },
+	{ "minutes", 'm', 0, G_OPTION_ARG_INT, &minutes, N_("Specify minutes to count down from"), NULL },
+	{ "hours", 'u', 0, G_OPTION_ARG_INT, &hours, N_("Specify hours to count down from"), NULL },
+	{ "text", 't', 0, G_OPTION_ARG_STRING, &entry_text, N_("Set an alternative notification text", NULL },
+	{ "run", 'r', 0, G_OPTION_ARG_NONE, &start_on_run, N_("Immediately start the countdown"), NULL },
 	{ NULL },
 };
 
