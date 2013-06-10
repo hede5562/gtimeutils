@@ -34,7 +34,7 @@ enum {
 GdkColor color;
 ca_context *sound;
 static gboolean start_on_run = FALSE;
-const gchar *entry_text = _("Notification text");
+const gchar *entry_text = N_("Notification text");
 gint state = STOPPED, hours = 0, minutes = 0, seconds = 0;
 GtkWidget *timer_display, *hbox1, *entry, *button_timer, *button_reset, *spin_seconds, *spin_minutes, *spin_hours;
 
