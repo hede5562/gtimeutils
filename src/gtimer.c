@@ -181,6 +181,9 @@ int main (int argc, char *argv[]) {
 
 	context = g_option_context_new(_("- a simple countdown timer"));
 	g_option_context_add_main_entries(context, entries, NULL);
+#ifdef ENABLE_NLS
+	g_option_context_set_translation_domain (context, GETTEXT_PACKAGE);
+#endif
 	if (!g_option_context_parse (context, &argc, &argv, &error_parsearg)) {
 		g_fprintf (stderr, "%s\n", error_parsearg->message);
 		exit(1);
