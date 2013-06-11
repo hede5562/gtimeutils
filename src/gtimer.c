@@ -31,7 +31,6 @@ enum {
     STOPPED
 };
 
-GdkColor color;
 ca_context *sound;
 static gboolean start_on_run = FALSE;
 const gchar *entry_text = N_("Notification text");
@@ -53,21 +52,6 @@ void reset_display (void) {
 	markup = g_markup_printf_escaped ("<span font=\"48\" weight=\"heavy\"><tt>%s</tt></span>", _("HH:MM:SS"));
 	gtk_label_set_markup (GTK_LABEL (timer_display), markup);
 	g_free (markup);
-}
-
-void button_timer_stop (void) {
-	gdk_color_parse ("#C73333", &color);
-	gtk_widget_modify_fg (button_timer, GTK_STATE_NORMAL, &color);
-	gtk_button_set_label (GTK_BUTTON (button_timer), _("Stop"));
-}
-
-void button_timer_start (gboolean start) {
-	gdk_color_parse ("#67953C", &color);
-	gtk_widget_modify_fg (button_timer, GTK_STATE_NORMAL, &color);
-	if(start)
-		gtk_button_set_label (GTK_BUTTON (button_timer), _("Start"));
-	else
-		gtk_button_set_label (GTK_BUTTON (button_timer), _("Continue"));
 }
 
 void notify (void) {
@@ -99,7 +83,7 @@ void counter (void) {
 
 	if(seconds == 0) {
 		notify();
-		button_timer_start (TRUE);
+		gtk_button_set_label (GTK_BUTTON (button_timer), _("Start"));
 		gtk_widget_set_sensitive (button_reset, FALSE);
 		gtk_widget_set_sensitive (entry, TRUE);
 		state = STOPPED;
@@ -130,15 +114,15 @@ gboolean timer_function (void) {
 
 void on_timer_button_clicked (void) {
 	if(state == STOPPED) {
-		button_timer_stop();
+		gtk_button_set_label (GTK_BUTTON (button_timer), _("Stop"));
 		gtk_widget_set_sensitive (button_reset, TRUE);
 		gtk_widget_set_sensitive (entry, FALSE);
 		state = STARTED;
 	} else if(state == PAUSED) {
-		button_timer_stop();
+		gtk_button_set_label (GTK_BUTTON (button_timer), _("Stop"));
 		state = STARTED;
 	} else if(state == STARTED) {
-		button_timer_start (FALSE);
+		gtk_button_set_label (GTK_BUTTON (button_timer), _("Continue"));
 		state = PAUSED;
 	}
 }
@@ -146,7 +130,7 @@ void on_timer_button_clicked (void) {
 void on_reset_button_clicked (void) {
 	if(state == PAUSED || state == STARTED) {
 		state = STOPPED;
-		button_timer_start (TRUE);
+		gtk_button_set_label (GTK_BUTTON (button_timer), _("Start"));
 		reset_display();
 		gtk_spin_button_set_value (GTK_SPIN_BUTTON (spin_seconds), 0);
 		gtk_spin_button_set_value (GTK_SPIN_BUTTON (spin_minutes), 0);
@@ -213,7 +197,7 @@ int main (int argc, char *argv[]) {
 	gtk_entry_set_text (GTK_ENTRY (entry), entry_text);
 	
 	button_timer = gtk_button_new();
-	button_timer_start (TRUE);
+	gtk_button_set_label (GTK_BUTTON (button_timer), _("Start"));
 	button_reset = gtk_button_new_with_label (_("Reset"));
 	gtk_widget_set_sensitive (button_reset, FALSE);
 
@@ -229,7 +213,6 @@ int main (int argc, char *argv[]) {
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW (window), "Gtimer");
-	gtk_window_set_default_icon_name ("clocks");
 	gtk_container_add (GTK_CONTAINER (window), vbox);
 	gtk_widget_show_all (window);
 
