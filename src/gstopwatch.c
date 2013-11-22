@@ -17,6 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <math.h>
 #include <config.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
@@ -64,7 +65,7 @@ gboolean stopwatch_function (void) {
 	gulong gulong;
 
 	if(state == STARTED) {
-		seconds = g_timer_elapsed (stopwatch, &gulong);
+		seconds = floor(g_timer_elapsed(stopwatch, &gulong) * 100 + 0.5) / 100;
 		counter (TRUE);
 	} else if(state == STOPPED)
 		counter (FALSE);
