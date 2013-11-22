@@ -191,7 +191,7 @@ int main (void) {
 	stopwatch = g_timer_new();
 	g_timer_stop (stopwatch);
 
-	g_timeout_add_full (G_PRIORITY_HIGH, 50, (GSourceFunc) stopwatch_function, NULL, NULL);
+	g_timeout_add_full (G_PRIORITY_HIGH, 60, (GSourceFunc) stopwatch_function, NULL, NULL);
 	g_signal_connect (G_OBJECT (window), "destroy", G_CALLBACK (gtk_main_quit), NULL);
 	g_signal_connect (button_stopwatch, "clicked", G_CALLBACK (on_stopwatch_button_clicked), NULL);
 	g_signal_connect (button_funcs, "clicked", G_CALLBACK (on_funcs_button_clicked), NULL);
