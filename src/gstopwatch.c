@@ -38,7 +38,7 @@ enum {
 GTimer *stopwatch;
 gchar output[100], lapout[100];
 gint state = STOPPED, laps = 0, hours = 0, minutes = 0, laphours = 0, lapminutes = 0;
-gdouble seconds = 0, lapseconds = 0, lapdiff = 0;
+gdouble globalseconds = 0, lapdiff = 0;
 GtkWidget *stopwatch_display, *button_stopwatch, *button_funcs, *tree;
 GtkListStore *liststore;
 GtkTreeSelection *selection;
@@ -46,6 +46,8 @@ GtkTreeIter selection_iter, iter;
 
 void counter (gboolean counting) {
 	gchar *markup;
+  gint hours = 0, minutes = 0, laphours = 0, lapminutes = 0;
+  gdouble seconds = globalseconds, lapseconds = 0;
 
 	if(counting) {
 		lapseconds = seconds - lapdiff;
@@ -75,7 +77,7 @@ gboolean stopwatch_function (void) {
 	gulong gulong;
 
 	if(state == STARTED) {
-		seconds = floor(g_timer_elapsed(stopwatch, &gulong) * 100 + 0.5) / 100;
+		globalseconds = floor(g_timer_elapsed(stopwatch, &gulong) * 100 + 0.5) / 100;
 		counter (TRUE);
 	} else if(state == STOPPED)
 		counter (FALSE);
@@ -113,7 +115,7 @@ void on_stopwatch_button_clicked (void) {
 
 void on_funcs_button_clicked (void) {
 	if(state == STARTED) {
-		lapdiff = seconds; 
+		lapdiff = globalseconds; 
 		add_lap();
 	} else if(state == PAUSED) {
 		g_timer_start (stopwatch);
