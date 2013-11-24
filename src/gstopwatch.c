@@ -53,16 +53,16 @@ void counter (gboolean counting) {
 		lapseconds -= 3600 * laphours;
 		lapminutes = lapseconds / 60;
 		lapseconds -= 60 * lapminutes;
-		sprintf(lapout, "%02d:%02d:%.2f", laphours, lapminutes, lapseconds);
+		sprintf(lapout, "%02d:%02d:%05.2f", laphours, lapminutes, lapseconds);
 
 		hours = seconds / 3600;
 		seconds -= 3600 * hours;
 		minutes = seconds / 60;
 		seconds -= 60 * minutes;
-		sprintf(output, "%02d:%02d:%.2f", hours, minutes, seconds);
+		sprintf(output, "%02d:%02d:%05.2f", hours, minutes, seconds);
 	} else {
-		sprintf(output, "00:00:0,00");
-		sprintf(lapout, "00:00:0,00");
+		sprintf(output, "00:00:00,00");
+		sprintf(lapout, "00:00:00,00");
 	}
 
 	gtk_label_set_text (GTK_LABEL (stopwatch_display), output);
